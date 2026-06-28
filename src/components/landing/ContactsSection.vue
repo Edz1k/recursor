@@ -23,7 +23,12 @@ const socialLinks = [
 </script>
 
 <template>
-  <section id="contacts" class="contacts-section" aria-labelledby="contacts-title">
+  <section
+    id="contacts"
+    class="contacts-section"
+    :data-theme="isDark ? 'dark' : 'light'"
+    aria-labelledby="contacts-title"
+  >
     <div class="contacts-background-word" aria-hidden="true">
       CONTACTS
     </div>
@@ -154,7 +159,8 @@ const socialLinks = [
 }
 
 :global(html.dark) .contacts-section,
-:global(.dark) .contacts-section {
+:global(.dark) .contacts-section,
+.contacts-section[data-theme='dark'] {
   --contacts-bg: #050505;
   --contacts-bg-center: #111111;
   --contacts-bg-edge: #0a0a0a;

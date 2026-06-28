@@ -4,14 +4,14 @@ const navigationLinks = [
   { label: 'О нас', href: '/#about' },
   { label: 'Как работаем', href: '/#work' },
   { label: 'Портфолио', href: '/#portfolio' },
-  { label: 'Контакты', href: '/#contacts' },
+  { label: 'Контакты', href: '/contacts' },
 ]
 
 const serviceLinks = [
-  { label: 'Разработка сайтов', href: '/#contacts' },
-  { label: 'Решения для бизнеса с нуля', href: '/#contacts' },
-  { label: 'Поддержка сайта', href: '/#contacts' },
-  { label: 'Ведение и развитие проекта', href: '/#contacts' },
+  { label: 'Разработка сайтов', href: '/contacts#contact-form' },
+  { label: 'Решения для бизнеса с нуля', href: '/contacts#contact-form' },
+  { label: 'Поддержка сайта', href: '/contacts#contact-form' },
+  { label: 'Ведение и развитие проекта', href: '/contacts#contact-form' },
 ]
 
 const contactLinks = [
@@ -58,7 +58,7 @@ const legalLinks = [
           <p class="footer-cta-text">
             Расскажите нам о задаче — мы найдём решение для любого бизнеса с нуля.
           </p>
-          <a class="footer-primary-button" href="/#contacts">
+          <a class="footer-primary-button" href="/contacts#contact-form">
             <span>Обсудить проект</span>
           </a>
           <p class="footer-trust-text">
