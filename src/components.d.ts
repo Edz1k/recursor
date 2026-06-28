@@ -11,6 +11,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ContactsSection: typeof import('./components/landing/ContactsSection.vue')['default']
     ProjectDiscussDialog: typeof import('./components/landing/ProjectDiscussDialog.vue')['default']
     README: typeof import('./components/README.md')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
