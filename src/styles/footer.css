@@ -1,26 +1,27 @@
 .site-footer {
-  --footer-bg: #f7f7f5;
-  --footer-bg-soft: rgba(255, 255, 255, 0.72);
-  --footer-panel: rgba(255, 255, 255, 0.58);
-  --footer-panel-hover: rgba(255, 255, 255, 0.86);
-  --footer-text: #070707;
+  --footer-bg: #f5f5f5;
+  --footer-bg-edge: #ececec;
+  --footer-bg-center: #fafafa;
+  --footer-bg-soft: rgba(250, 250, 250, 0.72);
+  --footer-panel: rgba(250, 250, 250, 0.62);
+  --footer-panel-hover: rgba(250, 250, 250, 0.82);
+  --footer-text: #050505;
   --footer-muted: #626262;
   --footer-border: rgba(0, 0, 0, 0.12);
-  --footer-border-strong: rgba(0, 0, 0, 0.22);
-  --footer-button-bg: #090909;
-  --footer-button-text: #ffffff;
-  --footer-glow: rgba(255, 255, 255, 0.92);
-  --footer-glow-soft: rgba(120, 135, 155, 0.2);
-  --footer-shadow: rgba(0, 0, 0, 0.12);
-  --footer-line: rgba(0, 0, 0, 0.08);
+  --footer-border-strong: rgba(0, 0, 0, 0.2);
+  --footer-button-bg: #050505;
+  --footer-button-text: #fafafa;
+  --footer-shadow: rgba(0, 0, 0, 0.08);
+  --footer-line: rgba(0, 0, 0, 0.07);
+  --footer-engrave-light: rgba(255, 255, 255, 0.44);
+  --footer-engrave-dark: rgba(0, 0, 0, 0.18);
 
   position: relative;
   isolation: isolate;
   overflow: hidden;
   background:
-    radial-gradient(circle at 12% 10%, var(--footer-glow) 0, transparent 30%),
-    radial-gradient(circle at 82% 24%, var(--footer-glow-soft) 0, transparent 28%),
-    linear-gradient(180deg, var(--footer-bg), var(--footer-bg));
+    radial-gradient(circle at 50% 38%, var(--footer-bg-center) 0, var(--footer-bg) 44%, var(--footer-bg-edge) 100%),
+    var(--footer-bg);
   color: var(--footer-text);
   font-family:
     Inter,
@@ -34,19 +35,21 @@
 
 html.dark .site-footer {
   --footer-bg: #050505;
-  --footer-bg-soft: rgba(16, 16, 16, 0.72);
-  --footer-panel: rgba(255, 255, 255, 0.045);
-  --footer-panel-hover: rgba(255, 255, 255, 0.075);
+  --footer-bg-edge: #0a0a0a;
+  --footer-bg-center: #111111;
+  --footer-bg-soft: rgba(22, 22, 22, 0.7);
+  --footer-panel: rgba(27, 27, 27, 0.58);
+  --footer-panel-hover: rgba(34, 34, 34, 0.72);
   --footer-text: #ffffff;
   --footer-muted: #a2a2a2;
   --footer-border: rgba(255, 255, 255, 0.12);
-  --footer-border-strong: rgba(255, 255, 255, 0.22);
-  --footer-button-bg: #ffffff;
+  --footer-border-strong: rgba(255, 255, 255, 0.2);
+  --footer-button-bg: #fafafa;
   --footer-button-text: #050505;
-  --footer-glow: rgba(255, 255, 255, 0.16);
-  --footer-glow-soft: rgba(200, 220, 255, 0.1);
-  --footer-shadow: rgba(0, 0, 0, 0.42);
-  --footer-line: rgba(255, 255, 255, 0.08);
+  --footer-shadow: rgba(0, 0, 0, 0.32);
+  --footer-line: rgba(255, 255, 255, 0.055);
+  --footer-engrave-light: rgba(255, 255, 255, 0.08);
+  --footer-engrave-dark: rgba(0, 0, 0, 0.74);
 }
 
 .site-footer::before {
@@ -55,12 +58,12 @@ html.dark .site-footer {
   z-index: -3;
   pointer-events: none;
   content: '';
-  opacity: 0.45;
+  opacity: 0.32;
   background-image:
     linear-gradient(var(--footer-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--footer-line) 1px, transparent 1px);
-  background-size: 80px 80px;
-  mask-image: linear-gradient(to bottom, transparent 0, #000 24%, #000 78%, transparent 100%);
+  background-size: 96px 96px;
+  mask-image: linear-gradient(to bottom, transparent 0, #000 28%, #000 76%, transparent 100%);
 }
 
 .site-footer::after {
@@ -69,13 +72,13 @@ html.dark .site-footer {
   z-index: -2;
   pointer-events: none;
   content: '';
-  opacity: 0.22;
+  opacity: 0.11;
   background-image:
-    radial-gradient(circle at 20% 30%, currentColor 0 1px, transparent 1px),
-    radial-gradient(circle at 80% 70%, currentColor 0 1px, transparent 1px);
+    radial-gradient(circle at 1px 1px, var(--footer-text) 0 0.45px, transparent 0.7px),
+    linear-gradient(135deg, transparent 0 48%, var(--footer-line) 49%, transparent 50% 100%);
   background-size:
-    28px 28px,
-    36px 36px;
+    18px 18px,
+    220px 220px;
 }
 
 .footer-container {
@@ -91,16 +94,15 @@ html.dark .site-footer {
   width: 100%;
   height: 1px;
   overflow: hidden;
-  background: var(--footer-border);
+  background: linear-gradient(90deg, transparent, var(--footer-border-strong) 50%, transparent);
 }
 
 .footer-top-line::after {
-  display: block;
-  width: 34%;
+  display: none;
+  width: 100%;
   height: 100%;
   content: '';
-  background: linear-gradient(90deg, transparent, var(--footer-text), transparent);
-  animation: footer-line-sweep 7s ease-in-out infinite;
+  background: none;
 }
 
 .footer-background-word {
@@ -114,8 +116,12 @@ html.dark .site-footer {
   font-weight: 950;
   letter-spacing: 0;
   line-height: 1;
-  opacity: 0.035;
+  opacity: 0.055;
   pointer-events: none;
+  text-shadow:
+    0 1px 0 var(--footer-engrave-light),
+    0 -1px 0 var(--footer-engrave-dark),
+    inset 0 1px 2px var(--footer-engrave-dark);
   transform: translate(-50%, -50%);
   white-space: nowrap;
 }
@@ -126,11 +132,12 @@ html.dark .site-footer {
   width: 280px;
   height: 280px;
   border-radius: 50%;
-  background: var(--footer-glow-soft);
-  filter: blur(42px);
-  opacity: 0.85;
+  display: none;
+  background: transparent;
+  filter: none;
+  opacity: 0;
   pointer-events: none;
-  animation: footer-float 12s ease-in-out infinite;
+  animation: none;
 }
 
 .footer-glow-one {
@@ -156,10 +163,12 @@ html.dark .site-footer {
   padding: clamp(56px, 8vw, 92px) clamp(20px, 5vw, 72px);
   border: 1px solid var(--footer-border);
   border-radius: 28px;
-  background: linear-gradient(145deg, var(--footer-bg-soft), transparent), var(--footer-panel);
-  box-shadow: 0 30px 90px var(--footer-shadow);
+  background: linear-gradient(180deg, var(--footer-bg-soft), var(--footer-panel)), var(--footer-panel);
+  box-shadow:
+    0 24px 70px var(--footer-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
   text-align: center;
-  backdrop-filter: blur(22px);
+  backdrop-filter: blur(10px);
   animation: footer-cta-reveal both ease-out;
   animation-timeline: view();
   animation-range: entry 8% cover 34%;
@@ -170,9 +179,9 @@ html.dark .site-footer {
   inset: -1px;
   z-index: -1;
   content: '';
-  opacity: 0.72;
+  opacity: 0.42;
   background:
-    radial-gradient(circle at 50% 0%, var(--footer-glow) 0, transparent 38%),
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0, transparent 34%),
     linear-gradient(120deg, transparent, var(--footer-border), transparent);
 }
 
@@ -180,11 +189,11 @@ html.dark .site-footer {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.38;
+  opacity: 0.2;
   background:
     linear-gradient(90deg, transparent 0 49%, var(--footer-line) 49% 50%, transparent 50%),
     linear-gradient(0deg, transparent 0 49%, var(--footer-line) 49% 50%, transparent 50%);
-  background-size: 120px 120px;
+  background-size: 140px 140px;
 }
 
 .footer-cta-kicker {
@@ -223,7 +232,7 @@ html.dark .site-footer {
   border: 1px solid var(--footer-border-strong);
   border-radius: 999px;
   background: var(--footer-button-bg);
-  box-shadow: 0 12px 36px var(--footer-shadow);
+  box-shadow: 0 10px 28px var(--footer-shadow);
   color: var(--footer-button-text);
   font-weight: 850;
   text-decoration: none;
@@ -239,7 +248,7 @@ html.dark .site-footer {
   inset: -60% -20%;
   content: '';
   opacity: 0;
-  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.38), transparent 70%);
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.22), transparent 70%);
   transform: translateX(-55%) rotate(10deg);
   transition:
     opacity 300ms ease,
@@ -252,9 +261,9 @@ html.dark .site-footer {
 }
 
 .footer-primary-button:hover {
-  box-shadow: 0 18px 52px var(--footer-shadow);
-  filter: contrast(1.06);
-  transform: translate3d(0, -3px, 0) scale(1.025);
+  box-shadow: 0 14px 38px var(--footer-shadow);
+  filter: contrast(1.03);
+  transform: translate3d(0, -2px, 0) scale(1.012);
 }
 
 .footer-primary-button:hover::before {
@@ -284,7 +293,7 @@ html.dark .site-footer {
   height: 8px;
   border-radius: 50%;
   background: var(--footer-text);
-  box-shadow: 0 0 0 5px color-mix(in srgb, var(--footer-text) 10%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--footer-text) 8%, transparent);
   animation: footer-dot-pulse 2.6s ease-in-out infinite;
 }
 
@@ -315,8 +324,8 @@ html.dark .site-footer {
 .footer-panel:hover {
   border-color: var(--footer-border);
   background: var(--footer-panel-hover);
-  box-shadow: 0 18px 46px var(--footer-shadow);
-  transform: translateY(-4px);
+  box-shadow: 0 14px 36px var(--footer-shadow);
+  transform: translateY(-2px);
 }
 
 .footer-logo {
@@ -381,7 +390,7 @@ html.dark .site-footer {
 .footer-legal a:hover,
 .footer-legal a:focus-visible {
   color: var(--footer-text);
-  text-shadow: 0 0 18px color-mix(in srgb, var(--footer-text) 22%, transparent);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--footer-text) 12%, transparent);
   transform: translateX(3px);
 }
 
@@ -423,8 +432,8 @@ html.dark .site-footer {
 .footer-social-link:focus-visible {
   border-color: var(--footer-border-strong);
   background: var(--footer-panel-hover);
-  box-shadow: 0 12px 34px var(--footer-shadow);
-  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 10px 28px var(--footer-shadow);
+  transform: translateY(-2px) scale(1.012);
 }
 
 .footer-bottom {
