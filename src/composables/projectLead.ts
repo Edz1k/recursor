@@ -1,12 +1,4 @@
-export interface ProjectLeadForm {
-  name: string
-  phone: string
-}
-
-export interface ProjectLeadPayload extends ProjectLeadForm {
-  source: 'navbar-discuss-project'
-  submittedAt: string
-}
+import type { ProjectLeadForm, ProjectLeadPayload } from '~/types'
 
 export function useProjectLead() {
   const form = reactive<ProjectLeadForm>({
@@ -14,14 +6,14 @@ export function useProjectLead() {
     phone: '',
   })
 
-  const isSubmitting = ref(false)
-  const isSubmitted = ref(false)
-  const errorMessage = ref('')
-  const lastPayload = ref<ProjectLeadPayload | null>(null)
+  const isSubmitting = shallowRef(false)
+  const isSubmitted = shallowRef(false)
+  const errorMessage = shallowRef('')
+  const lastPayload = shallowRef<ProjectLeadPayload | null>(null)
 
-  const canSubmit = computed(() => {
-    return form.name.trim().length > 1 && form.phone.replace(/\D/g, '').length === 11
-  })
+  const canSubmit = computed(() =>
+    form.name.trim().length > 1 && form.phone.replace(/\D/g, '').length === 11,
+  )
 
   function resetForm() {
     form.name = ''
