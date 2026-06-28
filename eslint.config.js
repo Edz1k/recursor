@@ -13,4 +13,10 @@ export default antfu(
       'markdown/heading-increment': 'off',
     },
   },
+  {
+    files: ['pnpm-workspace.yaml'],
+    rules: {
+      'pnpm/yaml-enforce-settings': 'off',
+    },
+  },
 )
