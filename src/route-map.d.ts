@@ -40,6 +40,34 @@ declare module 'vue-router/auto-routes' {
       { all: ParamValue<false> },
       | never
     >,
+    '/about': RouteRecordInfo<
+      '/about',
+      '/about',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/cases': RouteRecordInfo<
+      '/cases',
+      '/cases',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/contacts': RouteRecordInfo<
+      '/contacts',
+      '/contacts',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/help': RouteRecordInfo<
+      '/help',
+      '/help',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
   }
 
   /**
@@ -62,6 +90,30 @@ declare module 'vue-router/auto-routes' {
     'src/pages/[...all].vue': {
       routes:
         | '/[...all]'
+      views:
+        | never
+    }
+    'src/pages/about.vue': {
+      routes:
+        | '/about'
+      views:
+        | never
+    }
+    'src/pages/cases.vue': {
+      routes:
+        | '/cases'
+      views:
+        | never
+    }
+    'src/pages/contacts.vue': {
+      routes:
+        | '/contacts'
+      views:
+        | never
+    }
+    'src/pages/help.vue': {
+      routes:
+        | '/help'
       views:
         | never
     }
