@@ -2,54 +2,16 @@
 defineOptions({
   name: 'IndexPage',
 })
-const { savedName } = useUser()
-const name = ref(savedName.value)
-
-const router = useRouter()
-function go() {
-  if (name.value)
-    router.push(`/hi/${encodeURIComponent(name.value)}`)
-}
 
 useHead({
-  title: 'Home',
+  title: 'Recursor.kz',
 })
 </script>
 
 <template>
-  <div>
-    <div text-4xl>
-      <div i-carbon-campsite inline-block />
-    </div>
-    <p>
-      <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
-        Vitesse
-      </a>
-    </p>
-    <p>
-      <em text-sm opacity-75>Opinionated Vite Starter Template</em>
-    </p>
-
-    <div py-4 />
-
-    <TheInput
-      v-model="name"
-      placeholder="What's your name?"
-      autocomplete="false"
-      @keydown.enter="go"
-    />
-    <label class="hidden" for="input">What's your name?</label>
-
-    <div>
-      <button
-        m-3 btn text-sm
-        :disabled="!name"
-        @click="go"
-      >
-        GO
-      </button>
-    </div>
-  </div>
+  <section class="home-placeholder">
+    <p>Recursor.kz</p>
+  </section>
 </template>
 
 <route lang="yaml">

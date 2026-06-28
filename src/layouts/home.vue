@@ -1,12 +1,10 @@
+<script setup lang="ts">
+import SiteFooter from '~/components/landing/SiteFooter.vue'
+</script>
+
 <template>
-  <main
-    px-4 py-10
-    text="center gray-700 dark:gray-200"
-  >
+  <div class="home-layout">
     <RouterView />
-    <TheFooter />
-    <div mx-auto mt-5 text-center text-sm opacity-50>
-      [Home Layout]
-    </div>
-  </main>
+    <SiteFooter />
+  </div>
 </template>
