@@ -9,11 +9,7 @@ useHead({
 </script>
 
 <template>
-  <section class="home-placeholder bg-background text-foreground">
-    <p class="text-main">
-      Recursor.kz
-    </p>
-  </section>
+  <div />
 </template>
 
 <route lang="yaml">
