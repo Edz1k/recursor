@@ -2,8 +2,8 @@
 defineOptions({
   name: 'IndexPage',
 })
-const user = useUserStore()
-const name = ref(user.savedName)
+const { savedName } = useUser()
+const name = ref(savedName.value)
 
 const router = useRouter()
 function go() {
