@@ -1,10 +1,5 @@
-<script setup lang="ts">
-</script>
-
 <template>
-  <div>
-    Not found
-  </div>
+  <RouterView />
 </template>
 
 <route lang="yaml">

@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import ProjectDiscussDialog from './ProjectDiscussDialog.vue'
-
-const isMenuOpen = ref(false)
-const isDiscussDialogOpen = ref(false)
+const isMenuOpen = shallowRef(false)
+const isDiscussDialogOpen = shallowRef(false)
 const themeToggleLabel = computed(() => isDark.value ? 'Включить светлую тему' : 'Включить темную тему')
 
-const navItems = ref([
+const navItems = [
   { name: 'Контакты', path: '/contacts' },
   { name: 'Главная', path: '/' },
   { name: 'О нас', path: '/about' },
   { name: 'Кейсы', path: '/cases' },
-])
+]
 
 function closeMenu() {
   isMenuOpen.value = false
