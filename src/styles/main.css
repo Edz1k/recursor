@@ -1,6 +1,42 @@
 @import './markdown.css';
 @import './footer.css';
 
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #09090b;
+  --color-main: #09090b;
+  --color-main-foreground: #ffffff;
+  --color-secondary: #27272a;
+  --color-secondary-foreground: #ffffff;
+  --color-accent: #3f3f46;
+  --color-accent-foreground: #ffffff;
+  --color-muted: #71717a;
+  --color-muted-foreground: #52525b;
+  --color-muted-surface: #f4f4f5;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #fafafa;
+  --color-border: #e4e4e7;
+  --color-ring: #18181b;
+}
+
+.dark {
+  --color-background: #09090b;
+  --color-foreground: #fafafa;
+  --color-main: #fafafa;
+  --color-main-foreground: #09090b;
+  --color-secondary: #e4e4e7;
+  --color-secondary-foreground: #09090b;
+  --color-accent: #d4d4d8;
+  --color-accent-foreground: #09090b;
+  --color-muted: #a1a1aa;
+  --color-muted-foreground: #d4d4d8;
+  --color-muted-surface: #18181b;
+  --color-surface: #18181b;
+  --color-surface-elevated: #27272a;
+  --color-border: rgb(255 255 255 / 12%);
+  --color-ring: #fafafa;
+}
+
 html,
 body,
 #app {
@@ -9,8 +45,13 @@ body,
   padding: 0;
 }
 
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
 html.dark {
-  background: #121212;
+  background: var(--color-background);
   color-scheme: dark;
 }
 
@@ -19,7 +60,7 @@ html.dark {
 }
 
 #nprogress .bar {
-  background: rgb(13, 148, 136);
+  background: var(--color-main);
   opacity: 0.75;
   position: fixed;
   z-index: 1031;

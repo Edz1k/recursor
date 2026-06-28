@@ -9,8 +9,10 @@ useHead({
 </script>
 
 <template>
-  <section class="home-placeholder">
-    <p>Recursor.kz</p>
+  <section class="home-placeholder bg-background text-foreground">
+    <p class="text-main">
+      Recursor.kz
+    </p>
   </section>
 </template>
 
