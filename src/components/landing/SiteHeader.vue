@@ -4,10 +4,10 @@ const isDiscussDialogOpen = shallowRef(false)
 const themeToggleLabel = computed(() => isDark.value ? 'Включить светлую тему' : 'Включить темную тему')
 
 const navItems = [
-  { name: 'Контакты', path: '/contacts' },
   { name: 'Главная', path: '/' },
-  { name: 'О нас', path: '/about' },
   { name: 'Кейсы', path: '/cases' },
+  { name: 'О нас', path: '/about' },
+  { name: 'Контакты', path: '/contacts' },
 ]
 
 function closeMenu() {
@@ -152,6 +152,7 @@ function openDiscussDialog() {
   display: inline-flex;
   align-items: center;
   min-width: 9.5rem;
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .brand-word {
@@ -161,6 +162,20 @@ function openDiscussDialog() {
   letter-spacing: 0;
   line-height: 1;
   color: var(--color-main);
+  transition:
+    color 260ms ease,
+    text-shadow 260ms ease;
+}
+
+.brand-link:hover,
+.brand-link:focus-visible {
+  transform: translateY(-1px);
+}
+
+.brand-link:hover .brand-word,
+.brand-link:focus-visible .brand-word {
+  color: var(--color-foreground);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--color-main) 26%, transparent);
 }
 
 .brand-main {
@@ -305,6 +320,8 @@ function openDiscussDialog() {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .brand-link,
+  .brand-word,
   .brand-dot,
   .nav-link,
   .nav-link::after,

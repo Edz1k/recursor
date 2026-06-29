@@ -29,10 +29,6 @@ const socialLinks = [
     :data-theme="isDark ? 'dark' : 'light'"
     aria-labelledby="contacts-title"
   >
-    <div class="contacts-background-word" aria-hidden="true">
-      CONTACTS
-    </div>
-
     <div class="contacts-container">
       <div class="contacts-content">
         <p class="contacts-eyebrow">
@@ -193,27 +189,6 @@ const socialLinks = [
     88px 88px,
     88px 88px;
   mask-image: radial-gradient(circle at 54% 48%, #000 0, #000 48%, transparent 78%);
-}
-
-.contacts-background-word {
-  position: absolute;
-  right: max(-2rem, -2vw);
-  bottom: 6%;
-  z-index: -1;
-  color: var(--contacts-text);
-  font-size: clamp(5rem, 15vw, 14rem);
-  font-weight: 950;
-  letter-spacing: 0;
-  line-height: 0.85;
-  opacity: 0.045;
-  pointer-events: none;
-  text-shadow:
-    0 1px 0 rgb(255 255 255 / 8%),
-    0 -1px 0 rgb(0 0 0 / 52%);
-  transition:
-    color 300ms ease,
-    opacity 300ms ease;
-  white-space: nowrap;
 }
 
 .contacts-container {
@@ -533,7 +508,6 @@ const socialLinks = [
   .contacts-submit,
   .contacts-field input,
   .contacts-field textarea,
-  .contacts-background-word,
   .contacts-eyebrow,
   .contacts-text-link,
   .contacts-text-link::after,

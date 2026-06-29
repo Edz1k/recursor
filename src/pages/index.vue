@@ -154,10 +154,10 @@ const SERVICES = [
 ]
 
 const PROCESS = [
-  { step: '01', label: 'Разбираем задачу' },
-  { step: '02', label: 'Проектируем' },
-  { step: '03', label: 'Разрабатываем' },
-  { step: '04', label: 'Запускаем' },
+  { step: '01', label: 'Разбираем задачу', desc: 'Понимаем цели, аудиторию и что должен делать сайт.' },
+  { step: '02', label: 'Проектируем', desc: 'Продумываем структуру, блоки и удобный путь клиента.' },
+  { step: '03', label: 'Разрабатываем', desc: 'Собираем адаптивный сайт и подключаем нужную логику.' },
+  { step: '04', label: 'Запускаем', desc: 'Проверяем, публикуем и подготавливаем сайт к рекламе.' },
 ]
 </script>
 
@@ -349,7 +349,8 @@ const PROCESS = [
           class="process-item"
           :initial="{ opacity: 0, x: -40 }"
           :while-in-view="{ opacity: 1, x: 0 }"
-          :while-hover="{ x: 6 }"
+          :while-hover="{ y: -4 }"
+          :while-tap="{ scale: 0.99, y: -2 }"
           :transition="{ ...SPRING_MEDIUM, delay: i * 0.11 }"
           :viewport="{ once: true, margin: '-40px' }"
         >
@@ -364,6 +365,9 @@ const PROCESS = [
             {{ p.step }}
           </Motion>
           <span class="process-label">{{ p.label }}</span>
+          <p class="process-desc">
+            {{ p.desc }}
+          </p>
         </Motion>
       </ol>
     </div>
@@ -737,12 +741,14 @@ const PROCESS = [
 
 /* ── Process ───────────────────────────────────────────────────────────────── */
 .process-list {
+  position: relative;
   display: grid;
   gap: 1px;
   background: var(--color-border);
   border: 1px solid var(--color-border);
   border-radius: 1rem;
   overflow: hidden;
+  isolation: isolate;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -751,18 +757,50 @@ const PROCESS = [
   .process-list {
     grid-template-columns: repeat(4, 1fr);
   }
+
+  .process-list::before {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    top: 3rem;
+    right: 2rem;
+    left: 2rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-main), transparent);
+    opacity: 0.32;
+    pointer-events: none;
+  }
 }
 
 .process-item {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
   padding: 2rem;
   background: var(--color-muted-surface);
+  box-shadow: inset 0 0 0 1px transparent;
+  transition:
+    background-color 260ms ease,
+    box-shadow 260ms ease;
   will-change: transform;
 }
 
+.process-item:hover,
+.process-item:focus-within {
+  background: var(--color-background);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-main) 28%, transparent),
+    0 18px 42px rgb(0 0 0 / 12%);
+}
+
 .process-step {
+  position: relative;
+  z-index: 3;
+  align-self: flex-start;
+  padding-right: 0.625rem;
+  background: inherit;
   color: var(--color-muted);
   font-size: 0.6875rem;
   font-weight: 800;
@@ -774,6 +812,14 @@ const PROCESS = [
   color: var(--color-foreground);
   font-size: 1.0625rem;
   font-weight: 800;
+  line-height: 1.25;
+}
+
+.process-desc {
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: 0.9375rem;
+  line-height: 1.65;
 }
 
 /* ── CTA ───────────────────────────────────────────────────────────────────── */
@@ -868,6 +914,9 @@ const PROCESS = [
   .section,
   .cta-section {
     padding: 5rem 0;
+  }
+  .process-item {
+    padding: 1.5rem;
   }
 }
 
