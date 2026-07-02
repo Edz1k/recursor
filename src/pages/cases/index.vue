@@ -106,7 +106,7 @@ useHead({
                   </div>
                 </div>
               </div>
-              <div v-if="item.previewImages.length" class="case-preview-strip" aria-label="Дополнительные скриншоты KONTUR">
+              <div v-if="item.previewImages.length" class="case-preview-strip" :aria-label="`Дополнительные скриншоты ${item.title}`">
                 <div v-for="preview in item.previewImages" :key="preview.label" class="case-mini-browser">
                   <img :src="preview.image" :alt="preview.label">
                   <span>{{ preview.label }}</span>
@@ -131,7 +131,7 @@ useHead({
                 <p>{{ item.done }}</p>
               </div>
 
-              <div v-if="item.slug === 'kontur'" class="case-insights">
+              <div v-if="item.slug === 'kontur' || item.slug === 'brillex'" class="case-insights">
                 <div>
                   <span>Задача</span>
                   <p>{{ item.task }}</p>

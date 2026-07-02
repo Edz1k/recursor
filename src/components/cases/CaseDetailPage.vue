@@ -137,7 +137,11 @@ useHead(() => ({
               <strong>{{ shot.label }}</strong>
             </div>
             <div class="gallery-screen">
-              <img class="gallery-img" :src="shot.image" :alt="shot.alt">
+              <img v-if="shot.image" class="gallery-img" :src="shot.image" :alt="shot.alt">
+              <div v-else class="gallery-placeholder" role="img" :aria-label="shot.alt">
+                <span>{{ shot.label }}</span>
+                <p>Скриншот добавим позже</p>
+              </div>
             </div>
           </div>
         </div>
@@ -352,6 +356,33 @@ useHead(() => ({
   min-height: 24rem;
 }
 
+.gallery-placeholder {
+  display: flex;
+  min-height: 24rem;
+  padding: 1.5rem;
+  align-items: flex-start;
+  justify-content: flex-end;
+  flex-direction: column;
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 10%), transparent 42%),
+    radial-gradient(circle at 78% 18%, rgb(130 170 255 / 18%), transparent 34%), var(--color-muted-surface);
+  color: var(--color-foreground);
+}
+
+.gallery-placeholder span {
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.gallery-placeholder p {
+  margin: 0.7rem 0 0;
+  color: var(--color-muted-foreground);
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
 .case-section,
 .case-cta {
   padding: 4.5rem 0;
@@ -562,6 +593,10 @@ useHead(() => ({
   }
 
   .gallery-img {
+    min-height: 16rem;
+  }
+
+  .gallery-placeholder {
     min-height: 16rem;
   }
 }
