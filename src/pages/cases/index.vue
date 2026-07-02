@@ -108,7 +108,8 @@ useHead({
               </div>
               <div v-if="item.previewImages.length" class="case-preview-strip" :aria-label="`Дополнительные скриншоты ${item.title}`">
                 <div v-for="preview in item.previewImages" :key="preview.label" class="case-mini-browser">
-                  <img :src="preview.image" :alt="preview.label">
+                  <img v-if="preview.image" :src="preview.image" :alt="preview.label">
+                  <div v-else class="case-mini-placeholder" role="img" :aria-label="`Место под скриншот: ${preview.label}`" />
                   <span>{{ preview.label }}</span>
                 </div>
               </div>
@@ -131,7 +132,7 @@ useHead({
                 <p>{{ item.done }}</p>
               </div>
 
-              <div v-if="item.slug === 'kontur' || item.slug === 'brillex'" class="case-insights">
+              <div v-if="item.slug === 'kontur' || item.slug === 'brillex' || item.slug === 'mega-beton' || item.slug === 'amo-logistics'" class="case-insights">
                 <div>
                   <span>Задача</span>
                   <p>{{ item.task }}</p>
@@ -429,8 +430,21 @@ useHead({
   transition: transform 260ms ease;
 }
 
+.case-mini-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 5.3rem;
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 12%), transparent 44%),
+    radial-gradient(circle at 76% 18%, rgb(130 170 255 / 18%), transparent 34%), var(--color-muted-surface);
+  transform: scale(1);
+  transition: transform 260ms ease;
+}
+
 .case-card:hover .case-mini-browser img,
-.case-card:focus-within .case-mini-browser img {
+.case-card:focus-within .case-mini-browser img,
+.case-card:hover .case-mini-placeholder,
+.case-card:focus-within .case-mini-placeholder {
   transform: scale(1.045);
 }
 
