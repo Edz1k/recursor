@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
+import brillexPreview from '~/assets/services/brillex-preview.png'
+import konturPreview from '~/assets/services/kontur-preview.png'
+import megabetonPreview from '~/assets/services/megabeton-preview.png'
 
 defineOptions({ name: 'IndexPage' })
 useHead({ title: 'Recursor.kz — Web Studio' })
@@ -148,9 +151,36 @@ const MARQUEE = [
 ]
 
 const SERVICES = [
-  { num: '01', title: 'Разработка сайтов', desc: 'Лендинги, корпоративные сайты, личные бренды — с понятной структурой, анимациями и быстрой загрузкой.' },
-  { num: '02', title: 'Бизнес-решения', desc: 'Кабинеты, формы, интеграции с Telegram-ботами и CRM — автоматизируем рутинные процессы.' },
-  { num: '03', title: 'Поддержка и развитие', desc: 'Не бросаем после запуска. Помогаем с доработками, обновлениями и масштабированием.' },
+  {
+    num: '01',
+    title: 'Разработка сайтов',
+    desc: 'Лендинги, корпоративные сайты, личные бренды — с понятной структурой, анимациями и быстрой загрузкой.',
+    tags: ['Лендинги', 'Корпоративные', 'Бренды'],
+    preview: 'Kontur',
+    previewClass: 'preview-site',
+    image: konturPreview,
+    imageAlt: 'Скриншот сайта Kontur с натяжными потолками',
+  },
+  {
+    num: '02',
+    title: 'Бизнес-решения',
+    desc: 'Кабинеты, формы, интеграции с Telegram-ботами и CRM — автоматизируем рутинные процессы.',
+    tags: ['Формы', 'Telegram-боты', 'CRM'],
+    preview: 'Brillex',
+    previewClass: 'preview-business',
+    image: brillexPreview,
+    imageAlt: 'Скриншот сайта Brillex с CRM-системой',
+  },
+  {
+    num: '03',
+    title: 'Поддержка и развитие',
+    desc: 'Не бросаем после запуска. Помогаем с доработками, обновлениями и масштабированием.',
+    tags: ['Доработки', 'SEO', 'Масштабирование'],
+    preview: 'Mega Beton',
+    previewClass: 'preview-support',
+    image: megabetonPreview,
+    imageAlt: 'Скриншот сайта Mega Beton',
+  },
 ]
 
 const PROCESS = [
@@ -302,22 +332,42 @@ const PROCESS = [
           :transition="{ ...SPRING_MEDIUM, delay: i * 0.13 }"
           :viewport="{ once: true, margin: '-50px' }"
         >
-          <span class="service-num">{{ s.num }}</span>
-          <h3 class="service-title">
-            {{ s.title }}
-          </h3>
-          <p class="service-desc">
-            {{ s.desc }}
-          </p>
-          <Motion
-            as="span"
-            class="service-arrow i-carbon-arrow-up-right"
-            aria-hidden="true"
-            :initial="{ opacity: 0, x: -6, y: 6 }"
-            :while-in-view="{ opacity: 0 }"
-            :while-hover="{ opacity: 1, x: 0, y: 0 }"
-            :transition="SPRING_SNAPPY"
-          />
+          <div class="service-preview" :class="s.previewClass">
+            <div class="service-browser">
+              <div class="service-browser-bar">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div class="service-screen">
+                <img class="service-screen-img" :src="s.image" :alt="s.imageAlt">
+                <div class="service-screen-header">
+                  <span class="service-screen-label">{{ s.preview }}</span>
+                  <span class="service-screen-pill" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="service-body">
+            <div class="service-heading">
+              <span class="service-num">{{ s.num }}</span>
+              <h3 class="service-title">
+                {{ s.title }}
+              </h3>
+            </div>
+            <p class="service-desc">
+              {{ s.desc }}
+            </p>
+            <div class="service-tags" aria-label="Направления">
+              <span v-for="tag in s.tags" :key="tag" class="service-tag">{{ tag }}</span>
+            </div>
+          </div>
+
+          <RouterLink to="/cases" class="service-example" aria-label="Смотреть пример услуги">
+            Смотреть пример
+            <span aria-hidden="true">→</span>
+          </RouterLink>
         </Motion>
       </div>
     </div>
@@ -680,26 +730,177 @@ const PROCESS = [
 /* ── Services ──────────────────────────────────────────────────────────────── */
 .services-grid {
   display: grid;
-  gap: 1px;
-  background: var(--color-border);
-  border: 1px solid var(--color-border);
-  border-radius: 1rem;
-  overflow: hidden;
+  grid-template-columns: 1fr;
+  gap: 1rem;
 }
-@media (min-width: 768px) {
+@media (min-width: 720px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1040px) {
   .services-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 .service-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.875rem;
-  padding: 2rem;
-  background: var(--color-background);
+  min-height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgb(255 255 255 / 4%), transparent 46%), var(--color-background);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 5%);
   cursor: default;
+  transition:
+    border-color 220ms ease,
+    background-color 220ms ease,
+    box-shadow 220ms ease;
   will-change: transform;
+}
+
+.service-card:hover,
+.service-card:focus-within {
+  border-color: color-mix(in srgb, var(--color-main) 42%, var(--color-border));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 8%),
+    0 22px 52px rgb(0 0 0 / 22%);
+}
+
+.service-preview {
+  padding: 1rem 1rem 0;
+}
+
+.service-browser {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-border) 76%, transparent);
+  border-radius: 0.75rem;
+  background: rgb(0 0 0 / 22%);
+  box-shadow: 0 18px 44px rgb(0 0 0 / 16%);
+}
+
+.service-browser-bar {
+  display: flex;
+  gap: 0.375rem;
+  align-items: center;
+  height: 1.7rem;
+  padding: 0 0.75rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 74%, transparent);
+  background: rgb(255 255 255 / 4%);
+}
+
+.service-browser-bar span {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 28%);
+}
+
+.service-screen {
+  position: relative;
+  min-height: 9rem;
+  aspect-ratio: 16 / 9;
+  padding: 1rem;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 10%, rgb(255 255 255 / 18%), transparent 34%),
+    linear-gradient(135deg, rgb(255 255 255 / 10%), rgb(255 255 255 / 2%));
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform 260ms ease;
+}
+
+.service-card:hover .service-screen,
+.service-card:focus-within .service-screen {
+  transform: scale(1.045);
+}
+
+.service-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgb(0 0 0 / 30%) 100%);
+  pointer-events: none;
+}
+
+.service-screen-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top;
+  opacity: 0.82;
+  filter: brightness(0.72) saturate(0.9);
+}
+
+.preview-business .service-screen-img {
+  object-position: center top;
+}
+
+.preview-site .service-screen {
+  background:
+    radial-gradient(circle at 20% 10%, rgb(137 221 255 / 24%), transparent 34%),
+    linear-gradient(135deg, rgb(130 170 255 / 28%), rgb(195 232 141 / 10%));
+}
+
+.preview-business .service-screen {
+  background:
+    radial-gradient(circle at 22% 12%, rgb(255 203 107 / 24%), transparent 34%),
+    linear-gradient(135deg, rgb(137 221 255 / 20%), rgb(199 146 234 / 14%));
+}
+
+.preview-support .service-screen {
+  background:
+    radial-gradient(circle at 20% 10%, rgb(127 219 202 / 22%), transparent 34%),
+    linear-gradient(135deg, rgb(195 232 141 / 18%), rgb(130 170 255 / 12%));
+}
+
+.service-screen-header,
+.service-screen-pill {
+  position: relative;
+  z-index: 1;
+}
+
+.service-screen-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.service-screen-label {
+  color: rgb(255 255 255 / 82%);
+  font-family: 'DM Mono', ui-monospace, monospace;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.service-screen-pill {
+  width: 2.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 24%);
+}
+
+.service-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1.5rem 1.5rem 0;
+}
+
+.service-heading {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.875rem;
+  align-items: center;
 }
 
 .service-num {
@@ -733,10 +934,48 @@ const PROCESS = [
   line-height: 1.7;
 }
 
-.service-arrow {
-  align-self: flex-end;
-  font-size: 1.125rem;
-  will-change: transform, opacity;
+.service-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.service-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.65rem;
+  padding: 0 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--color-border) 76%, transparent);
+  border-radius: 999px;
+  background: var(--color-muted-surface);
+  color: var(--color-muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.service-example {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  margin: 1.25rem 1.5rem 1.5rem;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  font-weight: 800;
+  text-decoration: none;
+  opacity: 0.72;
+  transition:
+    color 220ms ease,
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+.service-card:hover .service-example,
+.service-card:focus-within .service-example {
+  color: var(--color-foreground);
+  opacity: 1;
+  transform: translateX(2px);
 }
 
 /* ── Process ───────────────────────────────────────────────────────────────── */
