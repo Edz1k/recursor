@@ -32,16 +32,19 @@ useHead(() => ({
           :animate="{ opacity: 1, y: 0 }"
           :transition="SPRING_MEDIUM"
         >
-          <div>
+          <div class="case-hero-copy">
             <div class="case-meta">
               <span>{{ item.category }}</span>
               <span>{{ item.detailNiche }}</span>
             </div>
             <h1 id="case-title" class="case-title">
-              {{ item.detailHero }}
+              {{ item.title }}
             </h1>
+            <p class="case-subtitle">
+              {{ item.detailSubtitle }}
+            </p>
             <p class="case-description">
-              {{ item.shortDescription }}
+              {{ item.detailDescription }}
             </p>
           </div>
 
@@ -202,12 +205,12 @@ useHead(() => ({
 }
 
 .case-container {
-  width: min(1120px, calc(100% - 2rem));
+  width: min(1180px, calc(100% - 2rem));
   margin: 0 auto;
 }
 
 .case-hero {
-  padding: 5.5rem 0 4rem;
+  padding: 5rem 0 4rem;
   background: radial-gradient(circle at 78% 6%, rgb(130 170 255 / 10%), transparent 28rem), var(--color-background);
 }
 
@@ -230,15 +233,20 @@ useHead(() => ({
 
 .case-hero-grid {
   display: grid;
-  gap: 2rem;
+  gap: clamp(2rem, 5vw, 5rem);
   align-items: center;
+}
+
+.case-hero-copy {
+  max-width: 47.5rem;
+  min-width: 0;
 }
 
 .case-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.35rem;
 }
 
 .case-meta span,
@@ -258,18 +266,29 @@ useHead(() => ({
 .case-title {
   margin: 0;
   color: var(--color-foreground);
-  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-size: clamp(3.5rem, 7vw, 7rem);
   font-weight: 900;
-  line-height: 0.95;
+  line-height: 0.92;
   letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+}
+
+.case-subtitle {
+  max-width: 42rem;
+  margin: 1rem 0 0;
+  color: var(--color-foreground);
+  font-size: clamp(1.75rem, 3vw, 3.25rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
 }
 
 .case-description {
-  max-width: 42rem;
-  margin: 1.45rem 0 0;
+  max-width: 40rem;
+  margin: 1rem 0 0;
   color: var(--color-muted-foreground);
-  font-size: clamp(1rem, 1.7vw, 1.16rem);
-  line-height: 1.75;
+  font-size: clamp(1.05rem, 1.6vw, 1.28rem);
+  line-height: 1.6;
 }
 
 .case-browser {
@@ -281,7 +300,10 @@ useHead(() => ({
 }
 
 .hero-browser {
-  min-height: 18rem;
+  width: 100%;
+  max-width: 47.5rem;
+  aspect-ratio: 16 / 10;
+  justify-self: end;
 }
 
 .case-browser-bar {
@@ -325,7 +347,6 @@ useHead(() => ({
 
 .case-screen {
   height: calc(100% - 1.9rem);
-  min-height: 16.1rem;
 }
 
 .case-screen::after,
@@ -342,7 +363,7 @@ useHead(() => ({
   display: block;
   width: 100%;
   object-fit: cover;
-  object-position: left top;
+  object-position: top center;
   opacity: 0.84;
   filter: brightness(0.74) saturate(0.9);
 }
@@ -565,7 +586,10 @@ useHead(() => ({
 }
 
 @media (min-width: 860px) {
-  .case-hero-grid,
+  .case-hero-grid {
+    grid-template-columns: minmax(0, 0.95fr) minmax(20rem, 1fr);
+  }
+
   .detail-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -573,7 +597,48 @@ useHead(() => ({
 
 @media (max-width: 640px) {
   .case-hero {
-    padding: 4.5rem 0 3rem;
+    padding: 4.25rem 0 3rem;
+  }
+
+  .case-container {
+    width: min(100% - 2.5rem, 1180px);
+  }
+
+  .back-link {
+    margin-bottom: 1.5rem;
+  }
+
+  .case-meta {
+    gap: 0.45rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .case-meta span,
+  .feature-pill {
+    min-height: 1.7rem;
+    padding: 0 0.62rem;
+    font-size: 0.7rem;
+  }
+
+  .case-title {
+    font-size: clamp(2.375rem, 13vw, 3rem);
+    line-height: 0.96;
+  }
+
+  .case-subtitle {
+    margin-top: 0.85rem;
+    font-size: clamp(1.375rem, 7vw, 1.75rem);
+    line-height: 1.12;
+  }
+
+  .case-description {
+    margin-top: 0.85rem;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .hero-browser {
+    margin-top: 0.35rem;
   }
 
   .case-section,
