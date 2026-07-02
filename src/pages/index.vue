@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
-import brillexPreview from '~/assets/services/brillex-preview.png'
-import konturPreview from '~/assets/services/kontur-preview.png'
-import megabetonPreview from '~/assets/services/megabeton-preview.png'
+import brillexPreview from '~/assets/cases/brillex/hero.png'
+import konturPreview from '~/assets/cases/kontur/hero.png'
+import megabetonPreview from '~/assets/cases/mega-beton/hero.png'
 
 defineOptions({ name: 'IndexPage' })
 useHead({ title: 'Recursor.kz — Web Studio' })

@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
-import amoLogisticsPreview from '~/assets/services/amo-logistics-preview.png'
-import brillexPreview from '~/assets/services/brillex-preview.png'
-import konturPreview from '~/assets/services/kontur-preview.png'
-import megabetonPreview from '~/assets/services/megabeton-preview.png'
+import { CASES, HERO_BADGES, PROCESS_STEPS } from '~/data/cases'
 
 defineOptions({
   name: 'CasesPage',
@@ -13,66 +10,6 @@ const isDiscussOpen = shallowRef(false)
 
 const SPRING_MEDIUM = { type: 'spring', stiffness: 110, damping: 20 } as const
 const SPRING_SNAPPY = { type: 'spring', stiffness: 200, damping: 22 } as const
-
-const HERO_BADGES = [
-  'Сайты под заявки',
-  'CRM и автоматизация',
-  'B2B-проекты',
-  'Поддержка после запуска',
-]
-
-const CASES = [
-  {
-    id: 'kontur',
-    title: 'KONTUR',
-    category: 'Лендинг + заявки',
-    niche: 'Натяжные потолки',
-    story: 'Клиенту нужен был современный сайт для услуги в Алматы: чтобы человек быстро понял виды потолков, увидел преимущества, смог рассчитать примерную стоимость и оставить заявку.',
-    done: 'Собрали структуру лендинга, каталог потолков, калькулятор, кнопки связи, формы заявок и подготовку под рекламу.',
-    tags: ['Лендинг', 'Калькулятор', 'Telegram-заявки', 'SEO'],
-    image: konturPreview,
-    imageAlt: 'Скриншот сайта KONTUR',
-    browserLabel: 'kontur.kz',
-  },
-  {
-    id: 'brillex',
-    title: 'BRILLEX',
-    category: 'Бизнес-решение',
-    niche: 'Бренд одежды',
-    story: 'Задача была сложнее обычного сайта: нужен был не только внешний сайт для клиентов, но и внутренняя система для работы с заказами.',
-    done: 'Собрали сайт с каталогом и портфолио, а также CRM-систему для обработки заявок и управления процессами.',
-    tags: ['Сайт', 'CRM', 'Каталог', 'Админ-панель'],
-    image: brillexPreview,
-    imageAlt: 'Скриншот сайта BRILLEX',
-    browserLabel: 'brillex.kz',
-  },
-  {
-    id: 'megabeton',
-    title: 'MEGA BETON',
-    category: 'Поддержка и развитие',
-    niche: 'Бетон и строительные материалы',
-    story: 'Клиенту нужен был сайт под заявки и рекламу: понятно показать бетон с доставкой, услуги, контакты и быстро доводить посетителя до обращения.',
-    done: 'Собрали посадочную страницу, структуру под рекламу, формы, контактные кнопки и дальнейшие доработки проекта.',
-    tags: ['Лендинг', 'Формы', 'Реклама', 'Поддержка'],
-    image: megabetonPreview,
-    imageAlt: 'Скриншот сайта MEGA BETON',
-    browserLabel: 'megabeton.kz',
-  },
-  {
-    id: 'amo-logistics',
-    title: 'AMO Logistics',
-    category: 'Корпоративный сайт',
-    niche: 'Логистика и грузоперевозки',
-    story: 'Клиенту нужен был корпоративный сайт, который вызывает доверие и понятно показывает услуги для B2B-клиентов.',
-    done: 'Собрали структуру сайта, блоки услуг, подачу направлений перевозок, контактные сценарии и аккуратный корпоративный интерфейс.',
-    tags: ['Логистика', 'B2B', 'Корпоративный сайт', 'Заявки'],
-    image: amoLogisticsPreview,
-    imageAlt: 'Скриншот сайта AMO Logistics',
-    browserLabel: 'amo-logistics',
-  },
-]
-
-const PROCESS = ['Анализ', 'Структура', 'Дизайн', 'Разработка', 'Запуск', 'Поддержка']
 
 useHead({
   title: 'Кейсы — Recursor.kz',
@@ -141,8 +78,8 @@ useHead({
         <div class="cases-grid">
           <Motion
             v-for="(item, index) in CASES"
-            :id="item.id"
-            :key="item.id"
+            :id="item.slug"
+            :key="item.slug"
             as="article"
             class="case-card"
             :initial="{ opacity: 0, y: 42 }"
@@ -169,6 +106,12 @@ useHead({
                   </div>
                 </div>
               </div>
+              <div v-if="item.previewImages.length" class="case-preview-strip" aria-label="Дополнительные скриншоты KONTUR">
+                <div v-for="preview in item.previewImages" :key="preview.label" class="case-mini-browser">
+                  <img :src="preview.image" :alt="preview.label">
+                  <span>{{ preview.label }}</span>
+                </div>
+              </div>
             </div>
 
             <div class="case-content">
@@ -188,11 +131,22 @@ useHead({
                 <p>{{ item.done }}</p>
               </div>
 
+              <div v-if="item.slug === 'kontur'" class="case-insights">
+                <div>
+                  <span>Задача</span>
+                  <p>{{ item.task }}</p>
+                </div>
+                <div>
+                  <span>Цель</span>
+                  <p>{{ item.goal }}</p>
+                </div>
+              </div>
+
               <div class="case-tags" aria-label="Теги проекта">
                 <span v-for="tag in item.tags" :key="tag" class="case-tag">{{ tag }}</span>
               </div>
 
-              <RouterLink :to="`/cases#${item.id}`" class="case-link">
+              <RouterLink :to="item.route" class="case-link">
                 Смотреть кейс
                 <span aria-hidden="true">→</span>
               </RouterLink>
@@ -217,7 +171,7 @@ useHead({
         </div>
 
         <ol class="process-steps" aria-label="Этапы работы">
-          <li v-for="(step, index) in PROCESS" :key="step" class="process-step">
+          <li v-for="(step, index) in PROCESS_STEPS" :key="step" class="process-step">
             <span>{{ String(index + 1).padStart(2, '0') }}</span>
             {{ step }}
           </li>
@@ -439,6 +393,57 @@ useHead({
   background: rgb(0 0 0 / 22%);
 }
 
+.case-preview-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+.case-mini-browser {
+  position: relative;
+  min-height: 5.3rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-border) 76%, transparent);
+  border-radius: 0.7rem;
+  background: rgb(0 0 0 / 22%);
+}
+
+.case-mini-browser::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, rgb(0 0 0 / 52%));
+  pointer-events: none;
+}
+
+.case-mini-browser img {
+  width: 100%;
+  height: 100%;
+  min-height: 5.3rem;
+  object-fit: cover;
+  object-position: left top;
+  opacity: 0.82;
+  filter: brightness(0.72) saturate(0.88);
+  transform: scale(1);
+  transition: transform 260ms ease;
+}
+
+.case-card:hover .case-mini-browser img,
+.case-card:focus-within .case-mini-browser img {
+  transform: scale(1.045);
+}
+
+.case-mini-browser span {
+  position: absolute;
+  z-index: 1;
+  right: 0.55rem;
+  bottom: 0.45rem;
+  color: rgb(255 255 255 / 78%);
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
 .case-browser-bar {
   display: flex;
   align-items: center;
@@ -618,6 +623,38 @@ useHead({
   color: var(--color-foreground);
   font-size: 0.94rem;
   line-height: 1.65;
+}
+
+.case-insights {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.case-insights div {
+  padding: 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.8rem;
+  background: var(--color-muted-surface);
+}
+
+.case-insights span {
+  color: var(--color-muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.case-insights p {
+  display: -webkit-box;
+  margin: 0.35rem 0 0;
+  overflow: hidden;
+  color: var(--color-muted-foreground);
+  font-size: 0.84rem;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .case-tags {

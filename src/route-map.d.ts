@@ -47,9 +47,37 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/cases': RouteRecordInfo<
+    '/cases/': RouteRecordInfo<
+      '/cases/',
       '/cases',
-      '/cases',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/cases/amo-logistics': RouteRecordInfo<
+      '/cases/amo-logistics',
+      '/cases/amo-logistics',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/cases/brillex': RouteRecordInfo<
+      '/cases/brillex',
+      '/cases/brillex',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/cases/kontur': RouteRecordInfo<
+      '/cases/kontur',
+      '/cases/kontur',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/cases/mega-beton': RouteRecordInfo<
+      '/cases/mega-beton',
+      '/cases/mega-beton',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -99,9 +127,33 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/pages/cases.vue': {
+    'src/pages/cases/index.vue': {
       routes:
-        | '/cases'
+        | '/cases/'
+      views:
+        | never
+    }
+    'src/pages/cases/amo-logistics.vue': {
+      routes:
+        | '/cases/amo-logistics'
+      views:
+        | never
+    }
+    'src/pages/cases/brillex.vue': {
+      routes:
+        | '/cases/brillex'
+      views:
+        | never
+    }
+    'src/pages/cases/kontur.vue': {
+      routes:
+        | '/cases/kontur'
+      views:
+        | never
+    }
+    'src/pages/cases/mega-beton.vue': {
+      routes:
+        | '/cases/mega-beton'
       views:
         | never
     }
