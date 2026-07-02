@@ -96,20 +96,13 @@ useHead({
                   <span />
                   <strong>{{ item.browserLabel }}</strong>
                 </div>
-                <div class="case-screen" :class="{ 'case-screen-placeholder': !item.image }">
-                  <img v-if="item.image" class="case-screen-img" :src="item.image" :alt="item.imageAlt">
-                  <div v-else class="case-placeholder" aria-label="Временное превью AMO Logistics">
-                    <span class="case-placeholder-label">AMO</span>
-                    <span class="case-placeholder-title">Logistics</span>
-                    <span class="case-placeholder-line" />
-                    <span class="case-placeholder-line case-placeholder-line-short" />
-                  </div>
+                <div class="case-screen">
+                  <img class="case-screen-img" :src="item.image" :alt="item.imageAlt">
                 </div>
               </div>
               <div v-if="item.previewImages.length" class="case-preview-strip" :aria-label="`Дополнительные скриншоты ${item.title}`">
                 <div v-for="preview in item.previewImages" :key="preview.label" class="case-mini-browser">
-                  <img v-if="preview.image" :src="preview.image" :alt="preview.label">
-                  <div v-else class="case-mini-placeholder" role="img" :aria-label="`Место под скриншот: ${preview.label}`" />
+                  <img :src="preview.image" :alt="preview.label">
                   <span>{{ preview.label }}</span>
                 </div>
               </div>
@@ -132,7 +125,7 @@ useHead({
                 <p>{{ item.done }}</p>
               </div>
 
-              <div v-if="item.slug === 'kontur' || item.slug === 'brillex' || item.slug === 'mega-beton' || item.slug === 'amo-logistics'" class="case-insights">
+              <div class="case-insights">
                 <div>
                   <span>Задача</span>
                   <p>{{ item.task }}</p>
@@ -355,11 +348,13 @@ useHead({
 .cases-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 1.1rem;
 }
 
 .case-card {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
+  gap: 1.35rem;
   min-height: 100%;
   overflow: hidden;
   border: 1px solid var(--color-border);
@@ -380,30 +375,31 @@ useHead({
 }
 
 .case-preview {
-  flex: 0 0 44%;
   min-width: 0;
   padding: 1rem 0 1rem 1rem;
 }
 
 .case-browser {
-  height: 100%;
-  min-height: 17rem;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--color-border) 76%, transparent);
   border-radius: 0.85rem;
   background: rgb(0 0 0 / 22%);
 }
 
+.case-preview > .case-browser {
+  aspect-ratio: 16 / 10;
+}
+
 .case-preview-strip {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
   gap: 0.6rem;
   margin-top: 0.75rem;
 }
 
 .case-mini-browser {
   position: relative;
-  min-height: 5.3rem;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--color-border) 76%, transparent);
   border-radius: 0.7rem;
@@ -421,30 +417,16 @@ useHead({
 .case-mini-browser img {
   width: 100%;
   height: 100%;
-  min-height: 5.3rem;
   object-fit: cover;
-  object-position: left top;
+  object-position: top left;
   opacity: 0.82;
   filter: brightness(0.72) saturate(0.88);
   transform: scale(1);
   transition: transform 260ms ease;
 }
 
-.case-mini-placeholder {
-  width: 100%;
-  height: 100%;
-  min-height: 5.3rem;
-  background:
-    linear-gradient(135deg, rgb(255 255 255 / 12%), transparent 44%),
-    radial-gradient(circle at 76% 18%, rgb(130 170 255 / 18%), transparent 34%), var(--color-muted-surface);
-  transform: scale(1);
-  transition: transform 260ms ease;
-}
-
 .case-card:hover .case-mini-browser img,
-.case-card:focus-within .case-mini-browser img,
-.case-card:hover .case-mini-placeholder,
-.case-card:focus-within .case-mini-placeholder {
+.case-card:focus-within .case-mini-browser img {
   transform: scale(1.045);
 }
 
@@ -453,9 +435,20 @@ useHead({
   z-index: 1;
   right: 0.55rem;
   bottom: 0.45rem;
-  color: rgb(255 255 255 / 78%);
+  max-width: calc(100% - 1.1rem);
+  min-height: 1.35rem;
+  padding: 0 0.45rem;
+  border: 1px solid rgb(255 255 255 / 14%);
+  border-radius: 999px;
+  background: rgb(4 8 18 / 72%);
+  color: rgb(255 255 255 / 82%);
   font-size: 0.68rem;
   font-weight: 900;
+  line-height: 1.35rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
 }
 
 .case-browser-bar {
@@ -492,7 +485,6 @@ useHead({
 .case-screen {
   position: relative;
   height: calc(100% - 1.85rem);
-  min-height: 15.15rem;
   overflow: hidden;
   background:
     radial-gradient(circle at 20% 10%, rgb(255 255 255 / 18%), transparent 34%),
@@ -511,7 +503,7 @@ useHead({
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: left top;
+  object-position: top left;
   opacity: 0.82;
   filter: brightness(0.72) saturate(0.88);
   transform: scale(1);
@@ -519,65 +511,14 @@ useHead({
 }
 
 .case-card:hover .case-screen-img,
-.case-card:focus-within .case-screen-img,
-.case-card:hover .case-placeholder,
-.case-card:focus-within .case-placeholder {
+.case-card:focus-within .case-screen-img {
   transform: scale(1.045);
-}
-
-.case-screen-placeholder {
-  display: flex;
-  align-items: stretch;
-}
-
-.case-placeholder {
-  display: flex;
-  width: 100%;
-  padding: 1.35rem;
-  flex-direction: column;
-  justify-content: flex-end;
-  background:
-    linear-gradient(135deg, rgb(255 255 255 / 12%), transparent 42%),
-    radial-gradient(circle at 78% 20%, rgb(130 170 255 / 20%), transparent 34%), var(--color-muted-surface);
-  transition: transform 260ms ease;
-}
-
-.case-placeholder-label {
-  color: var(--color-muted);
-  font-family: 'DM Mono', ui-monospace, monospace;
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-}
-
-.case-placeholder-title {
-  margin-top: 0.45rem;
-  color: var(--color-foreground);
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
-}
-
-.case-placeholder-line {
-  display: block;
-  width: 72%;
-  height: 0.7rem;
-  margin-top: 1.3rem;
-  border-radius: 999px;
-  background: rgb(255 255 255 / 18%);
-}
-
-.case-placeholder-line-short {
-  width: 44%;
-  margin-top: 0.55rem;
 }
 
 .case-content {
   display: flex;
   min-width: 0;
-  padding: 1.45rem;
-  flex: 1;
+  padding: 1.35rem 1.35rem 1.35rem 0;
   flex-direction: column;
 }
 
@@ -605,9 +546,9 @@ useHead({
 .case-title {
   margin: 0;
   color: var(--color-foreground);
-  font-size: clamp(1.55rem, 2.5vw, 2.35rem);
+  font-size: clamp(1.55rem, 2.2vw, 2.15rem);
   font-weight: 900;
-  line-height: 1;
+  line-height: 1.02;
   letter-spacing: -0.03em;
 }
 
@@ -619,9 +560,11 @@ useHead({
 }
 
 .case-done {
-  margin-top: 1.1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--color-border);
+  margin-top: 1rem;
+  padding: 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.8rem;
+  background: rgb(255 255 255 / 3%);
 }
 
 .case-done span {
@@ -635,18 +578,20 @@ useHead({
 .case-done p {
   margin: 0.45rem 0 0;
   color: var(--color-foreground);
-  font-size: 0.94rem;
-  line-height: 1.65;
+  font-size: 0.9rem;
+  line-height: 1.58;
 }
 
 .case-insights {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.7rem;
-  margin-top: 1rem;
+  margin-top: 0.7rem;
 }
 
 .case-insights div {
-  padding: 0.8rem;
+  min-width: 0;
+  padding: 0.85rem;
   border: 1px solid var(--color-border);
   border-radius: 0.8rem;
   background: var(--color-muted-surface);
@@ -675,7 +620,7 @@ useHead({
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
-  margin-top: 1.1rem;
+  margin-top: 1rem;
 }
 
 .case-link {
@@ -807,37 +752,6 @@ useHead({
   }
 }
 
-@media (min-width: 860px) {
-  .cases-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .case-card {
-    flex-direction: column;
-  }
-
-  .case-preview {
-    flex: none;
-    padding: 1rem 1rem 0;
-  }
-
-  .case-browser {
-    min-height: 16rem;
-  }
-
-  .case-card:nth-child(1),
-  .case-card:nth-child(4) {
-    grid-column: span 2;
-    flex-direction: row;
-  }
-
-  .case-card:nth-child(1) .case-preview,
-  .case-card:nth-child(4) .case-preview {
-    flex: 0 0 46%;
-    padding: 1rem 0 1rem 1rem;
-  }
-}
-
 @media (min-width: 1080px) {
   .process-inner {
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -851,16 +765,20 @@ useHead({
 
 @media (max-width: 859px) {
   .case-card {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 
   .case-preview {
-    flex: none;
     padding: 1rem 1rem 0;
   }
 
-  .case-browser {
-    min-height: 15rem;
+  .case-content {
+    padding: 1.25rem;
+  }
+
+  .case-insights {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -880,13 +798,8 @@ useHead({
     flex-direction: column;
   }
 
-  .case-content,
-  .cta-card {
-    padding: 1.25rem;
-  }
-
-  .case-browser {
-    min-height: 13rem;
+  .case-preview-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .btn-primary {
@@ -896,7 +809,7 @@ useHead({
 
 @media (prefers-reduced-motion: reduce) {
   .case-screen-img,
-  .case-placeholder {
+  .case-mini-browser img {
     transition: none;
   }
 }
