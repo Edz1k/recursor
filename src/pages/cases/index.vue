@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
+import { useProjectDiscussDialog } from '~/composables/useProjectDiscussDialog'
 import { CASES, HERO_BADGES, PROCESS_STEPS } from '~/data/cases'
 
 defineOptions({
   name: 'CasesPage',
 })
 
-const isDiscussOpen = shallowRef(false)
+const { isDiscussOpen, openDiscussDialog } = useProjectDiscussDialog()
 
 const SPRING_MEDIUM = { type: 'spring', stiffness: 110, damping: 20 } as const
 const SPRING_SNAPPY = { type: 'spring', stiffness: 200, damping: 22 } as const
 
 useHead({
-  title: 'Кейсы — Recursor.kz',
+  title: 'Кейсы, Recursor.kz',
 })
 </script>
 
@@ -53,7 +54,7 @@ useHead({
         >
           <div>
             <p class="recursor-note-label">
-              RECURSOR — тоже наш проект
+              RECURSOR, тоже наш проект
             </p>
             <p class="recursor-note-text">
               Этот сайт мы спроектировали и собрали сами: от структуры и визуального стиля до блока услуг, кейсов и контактных сценариев.
@@ -142,7 +143,7 @@ useHead({
 
               <RouterLink :to="item.route" class="case-link">
                 Смотреть кейс
-                <span aria-hidden="true">→</span>
+                <span class="i-carbon-arrow-right" aria-hidden="true" />
               </RouterLink>
             </div>
           </Motion>
@@ -190,7 +191,7 @@ useHead({
             :while-tap="{ scale: 0.96 }"
             :transition="SPRING_SNAPPY"
           >
-            <button type="button" class="btn-primary" @click="isDiscussOpen = true">
+            <button type="button" class="btn-primary" @click="openDiscussDialog">
               Обсудить проект
             </button>
           </Motion>

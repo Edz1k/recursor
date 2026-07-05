@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useProjectDiscussDialog } from '~/composables/useProjectDiscussDialog'
+
 const isMenuOpen = shallowRef(false)
-const isDiscussDialogOpen = shallowRef(false)
+const { isDiscussOpen, openDiscussDialog: openProjectDiscussDialog } = useProjectDiscussDialog()
 const themeToggleLabel = computed(() => isDark.value ? 'Включить светлую тему' : 'Включить темную тему')
 
 const navItems = [
@@ -20,7 +22,7 @@ function toggleMenu() {
 
 function openDiscussDialog() {
   closeMenu()
-  isDiscussDialogOpen.value = true
+  openProjectDiscussDialog()
 }
 </script>
 
@@ -143,7 +145,7 @@ function openDiscussDialog() {
       </div>
     </Transition>
 
-    <ProjectDiscussDialog v-model:open="isDiscussDialogOpen" />
+    <ProjectDiscussDialog v-model:open="isDiscussOpen" />
   </header>
 </template>
 

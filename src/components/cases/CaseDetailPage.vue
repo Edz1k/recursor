@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import type { CaseSlug } from '~/data/cases'
 import { Motion } from 'motion-v'
+import { useProjectDiscussDialog } from '~/composables/useProjectDiscussDialog'
 import { getCaseBySlug } from '~/data/cases'
 
 const props = defineProps<{
   slug: CaseSlug
 }>()
 
-const isDiscussOpen = shallowRef(false)
+const { isDiscussOpen, openDiscussDialog } = useProjectDiscussDialog()
 const item = computed(() => getCaseBySlug(props.slug))
 
 const SPRING_MEDIUM = { type: 'spring', stiffness: 110, damping: 20 } as const
 const SPRING_SNAPPY = { type: 'spring', stiffness: 200, damping: 22 } as const
 
 useHead(() => ({
-  title: item.value ? `${item.value.title} — кейс Recursor.kz` : 'Кейс — Recursor.kz',
+  title: item.value ? `${item.value.title}, кейс Recursor.kz` : 'Кейс, Recursor.kz',
 }))
 </script>
 
@@ -23,7 +24,8 @@ useHead(() => ({
     <section class="case-hero" aria-labelledby="case-title">
       <div class="case-container">
         <RouterLink to="/cases" class="back-link">
-          ← Кейсы
+          <span class="i-carbon-arrow-left" aria-hidden="true" />
+          Кейсы
         </RouterLink>
 
         <Motion
@@ -172,20 +174,20 @@ useHead(() => ({
               rel="noopener"
             >
               Открыть сайт
-              <span aria-hidden="true">→</span>
+              <span class="i-carbon-arrow-right" aria-hidden="true" />
             </a>
             <span v-else class="btn-secondary btn-disabled" aria-disabled="true">
               Открыть сайт
-              <span aria-hidden="true">→</span>
+              <span class="i-carbon-arrow-right" aria-hidden="true" />
             </span>
             <Motion
               :while-hover="{ y: -3, scale: 1.04 }"
               :while-tap="{ scale: 0.96 }"
               :transition="SPRING_SNAPPY"
             >
-              <button type="button" class="btn-primary" @click="isDiscussOpen = true">
+              <button type="button" class="btn-primary" @click="openDiscussDialog">
                 Хочу похожий проект
-                <span aria-hidden="true">→</span>
+                <span class="i-carbon-arrow-right" aria-hidden="true" />
               </button>
             </Motion>
           </div>
@@ -216,6 +218,8 @@ useHead(() => ({
 
 .back-link {
   display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   margin-bottom: 2rem;
   color: var(--color-muted);
   font-size: 0.9rem;
