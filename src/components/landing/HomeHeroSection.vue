@@ -1,20 +1,15 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
-import { useMatrixRain } from '~/composables/useMatrixRain'
 import { SPRING_MEDIUM, SPRING_SNAPPY, SPRING_SOFT } from '~/data/motion'
 
 const emit = defineEmits<{
   discuss: []
 }>()
-
-const canvasRef = useTemplateRef<HTMLCanvasElement>('canvas')
-useMatrixRain(canvasRef)
 </script>
 
 <template>
   <section class="hero">
-    <canvas ref="canvas" class="hero-canvas" aria-hidden="true" />
-    <div class="hero-vignette" aria-hidden="true" />
+    <HomeCanvasBackdrop />
 
     <div class="hero-inner">
       <Motion
@@ -107,22 +102,6 @@ useMatrixRain(canvasRef)
   min-height: calc(100vh - 4.5rem);
   overflow: hidden;
   background: var(--color-background);
-}
-
-.hero-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.hero-vignette {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(ellipse 65% 85% at 50% 50%, var(--color-background) 0%, transparent 100%);
-  opacity: 0.84;
 }
 
 .hero-inner {
@@ -284,10 +263,6 @@ useMatrixRain(canvasRef)
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-canvas {
-    display: none;
-  }
-
   .hero-badge-dot {
     animation: none;
   }

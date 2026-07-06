@@ -14,6 +14,7 @@ declare module 'vue' {
     AboutStudioSection: typeof import('./components/AboutStudioSection.vue')['default']
     CaseDetailPage: typeof import('./components/cases/CaseDetailPage.vue')['default']
     ContactsSection: typeof import('./components/landing/ContactsSection.vue')['default']
+    HomeCanvasBackdrop: typeof import('./components/landing/HomeCanvasBackdrop.vue')['default']
     HomeCtaSection: typeof import('./components/landing/HomeCtaSection.vue')['default']
     HomeHeroSection: typeof import('./components/landing/HomeHeroSection.vue')['default']
     HomeMarquee: typeof import('./components/landing/HomeMarquee.vue')['default']
