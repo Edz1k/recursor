@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ContactMap from '~/components/contact/ContactMap.vue'
+import ContactWhatsAppPicker from '~/components/contact/ContactWhatsAppPicker.vue'
 
 const ctaNotes = [
   'Первая консультация бесплатно',
@@ -14,23 +15,31 @@ const contactLinks = [
   { label: 'hello@recursor.kz', href: 'mailto:hello@recursor.kz' },
 ]
 
+const studioAddress = [
+  'Алматы, ул. Ораза Жандосова, 98',
+  'БЦ «Навои»',
+]
+
 const studioLocation = {
-  address: [
-    'Алматы, ул. Ораза Жандосова, 98',
-    'БЦ «Навои»',
-  ],
+  address: ['БЦ «Навои»'],
   office: '7 этаж, офис 701',
   link: 'https://go.2gis.com/LFMmu',
-  coordinates: [76.879809, 43.219249] as const,
   label: 'Мы!',
 }
 
-const socialLinks = [
-  { label: 'Telegram-канал', href: '#' },
+const primarySocialLinks = [
   { label: 'Telegram личка', href: '#' },
-  { label: 'WhatsApp', href: 'https://wa.me/77074852328' },
+  { label: 'Telegram-канал', href: '#' },
+]
+
+const socialLinksAfterWhatsApp = [
   { label: 'Instagram', href: '#' },
   { label: 'TikTok', href: '#' },
+]
+
+const whatsappNumbers = [
+  { label: '+7 707 485 23 28', href: 'https://wa.me/77074852328' },
+  { label: '+7 775 144 20 23', href: 'https://wa.me/77751442023' },
 ]
 </script>
 
@@ -57,9 +66,11 @@ const socialLinks = [
           <a class="contacts-primary-link" href="#contact-form">
             Договориться о брифе
           </a>
-          <a class="contacts-secondary-link" href="https://wa.me/77074852328" target="_blank" rel="noreferrer">
-            Написать в WhatsApp
-          </a>
+          <ContactWhatsAppPicker
+            :numbers="whatsappNumbers"
+            label="Написать в WhatsApp"
+            variant="action"
+          />
         </div>
 
         <ul class="contacts-notes" aria-label="Важные пометки">
@@ -115,7 +126,7 @@ const socialLinks = [
                   {{ link.label }}
                 </a>
                 <address class="contacts-address">
-                  <span v-for="line in studioLocation.address" :key="line">{{ line }}</span>
+                  <span v-for="line in studioAddress" :key="line">{{ line }}</span>
                   <span>{{ studioLocation.office }}</span>
                 </address>
               </div>
@@ -124,8 +135,21 @@ const socialLinks = [
             <div>
               <h3>Соцсети и мессенджеры</h3>
               <div class="contacts-socials">
+                <ContactWhatsAppPicker :numbers="whatsappNumbers" />
+
                 <a
-                  v-for="link in socialLinks"
+                  v-for="link in primarySocialLinks"
+                  :key="link.label"
+                  class="contacts-social-link"
+                  :href="link.href"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ link.label }}
+                </a>
+
+                <a
+                  v-for="link in socialLinksAfterWhatsApp"
                   :key="link.label"
                   class="contacts-social-link"
                   :href="link.href"
@@ -468,10 +492,11 @@ const socialLinks = [
   color: var(--contacts-muted);
   line-height: 1.45;
   text-decoration: none;
+  opacity: 0.82;
+  outline: none;
   transition:
-    color 300ms ease,
-    text-shadow 300ms ease,
-    transform 300ms ease;
+    color 240ms ease,
+    opacity 240ms ease;
 }
 
 .contacts-text-link::after,
@@ -493,8 +518,12 @@ const socialLinks = [
 .contacts-social-link:hover,
 .contacts-social-link:focus-visible {
   color: var(--contacts-text);
-  text-shadow: 0 0 14px color-mix(in srgb, var(--contacts-text) 12%, transparent);
-  transform: translateX(3px);
+  opacity: 1;
+}
+
+.contacts-social-link:focus-visible {
+  border-radius: 0.2rem;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--contacts-text) 12%, transparent);
 }
 
 .contacts-text-link:hover::after,
@@ -537,6 +566,7 @@ const socialLinks = [
 
   .contacts-lower {
     grid-template-columns: 1fr;
+    min-width: 0;
   }
 }
 

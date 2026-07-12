@@ -15,6 +15,7 @@ declare module 'vue' {
     CaseDetailPage: typeof import('./components/cases/CaseDetailPage.vue')['default']
     ContactMap: typeof import('./components/contact/ContactMap.vue')['default']
     ContactsSection: typeof import('./components/landing/ContactsSection.vue')['default']
+    ContactWhatsAppPicker: typeof import('./components/contact/ContactWhatsAppPicker.vue')['default']
     HomeCanvasBackdrop: typeof import('./components/landing/HomeCanvasBackdrop.vue')['default']
     HomeCtaSection: typeof import('./components/landing/HomeCtaSection.vue')['default']
     HomeHeroSection: typeof import('./components/landing/HomeHeroSection.vue')['default']

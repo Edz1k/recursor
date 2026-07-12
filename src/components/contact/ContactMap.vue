@@ -3,7 +3,6 @@ interface Props {
   address: string[]
   office: string
   link: string
-  coordinates: readonly [number, number]
   label: string
 }
 
@@ -48,9 +47,6 @@ useScrollReveal({
           <span v-for="line in props.address" :key="line">{{ line }}</span>
           <span>{{ props.office }}</span>
         </address>
-        <p class="contact-map-coordinates">
-          {{ props.coordinates[1] }}, {{ props.coordinates[0] }}
-        </p>
       </div>
 
       <a
@@ -61,7 +57,9 @@ useScrollReveal({
         aria-label="Открыть адрес Recursor Web Studio в 2GIS"
       >
         Открыть в 2GIS
-        <span aria-hidden="true">↗</span>
+        <svg class="contact-map-link-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M14 5h5v5M19 5l-8 8M19 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4" />
+        </svg>
       </a>
     </div>
   </section>
@@ -97,6 +95,10 @@ useScrollReveal({
     border-color 280ms ease,
     transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 280ms ease;
+}
+
+.contact-map-preview > * {
+  pointer-events: none;
 }
 
 .contact-map-preview:hover,
@@ -148,20 +150,20 @@ useScrollReveal({
 
 .contact-map-marker {
   position: absolute;
-  top: 48%;
-  left: 58%;
+  top: 43%;
+  left: 56%;
   display: grid;
   justify-items: center;
   transform: translate(-50%, -100%);
 }
 
 .contact-map-marker-label {
-  min-width: 2.6rem;
-  padding: 0.35rem 0.55rem;
+  min-width: 2.25rem;
+  padding: 0.28rem 0.46rem;
   border-radius: 999px;
   background: var(--contacts-text);
   color: var(--contacts-bg-center);
-  font-size: 0.78rem;
+  font-size: 0.7rem;
   font-weight: 900;
   line-height: 1;
   text-align: center;
@@ -198,7 +200,7 @@ useScrollReveal({
 .contact-map-details {
   display: grid;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 
 .contact-map-copy h3 {
@@ -215,15 +217,6 @@ useScrollReveal({
   color: var(--contacts-muted);
   font-style: normal;
   line-height: 1.45;
-}
-
-.contact-map-coordinates {
-  margin: 0.55rem 0 0;
-  color: var(--contacts-muted);
-  font-family: var(--font-mono, monospace);
-  font-size: 0.75rem;
-  font-variant-numeric: tabular-nums;
-  opacity: 0.72;
 }
 
 .contact-map-link {
@@ -248,11 +241,27 @@ useScrollReveal({
     box-shadow 280ms ease;
 }
 
+.contact-map-link-icon {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .contact-map-link:hover,
 .contact-map-link:focus-visible {
   border-color: var(--contacts-border-strong);
   background: var(--contacts-card-hover);
   transform: translateY(-1px);
+}
+
+.contact-map-link:hover .contact-map-link-icon,
+.contact-map-link:focus-visible .contact-map-link-icon {
+  transform: translate(1px, -1px);
 }
 
 @media (max-width: 620px) {
@@ -262,6 +271,7 @@ useScrollReveal({
 
   .contact-map-link {
     width: 100%;
+    min-height: 3rem;
   }
 }
 
@@ -269,7 +279,8 @@ useScrollReveal({
   .contact-map,
   .contact-map-preview,
   .contact-map-marker-label,
-  .contact-map-link {
+  .contact-map-link,
+  .contact-map-link-icon {
     transition: none;
   }
 
