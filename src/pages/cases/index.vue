@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
+import { useProjectDiscussDialog } from '~/composables/useProjectDiscussDialog'
 import { CASES, HERO_BADGES, PROCESS_STEPS } from '~/data/cases'
 
 defineOptions({
   name: 'CasesPage',
 })
 
-const isDiscussOpen = shallowRef(false)
+const { isDiscussOpen, openDiscussDialog } = useProjectDiscussDialog()
 
 const SPRING_MEDIUM = { type: 'spring', stiffness: 110, damping: 20 } as const
 const SPRING_SNAPPY = { type: 'spring', stiffness: 200, damping: 22 } as const
 
 useHead({
-  title: 'Кейсы — Recursor.kz',
+  title: 'Кейсы, Recursor.kz',
 })
 </script>
 
@@ -53,7 +54,7 @@ useHead({
         >
           <div>
             <p class="recursor-note-label">
-              RECURSOR — тоже наш проект
+              RECURSOR, тоже наш проект
             </p>
             <p class="recursor-note-text">
               Этот сайт мы спроектировали и собрали сами: от структуры и визуального стиля до блока услуг, кейсов и контактных сценариев.
@@ -142,7 +143,7 @@ useHead({
 
               <RouterLink :to="item.route" class="case-link">
                 Смотреть кейс
-                <span aria-hidden="true">→</span>
+                <span class="i-carbon-arrow-right" aria-hidden="true" />
               </RouterLink>
             </div>
           </Motion>
@@ -190,7 +191,7 @@ useHead({
             :while-tap="{ scale: 0.96 }"
             :transition="SPRING_SNAPPY"
           >
-            <button type="button" class="btn-primary" @click="isDiscussOpen = true">
+            <button type="button" class="btn-primary" @click="openDiscussDialog">
               Обсудить проект
             </button>
           </Motion>
@@ -375,6 +376,9 @@ useHead({
 }
 
 .case-preview {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
   min-width: 0;
   padding: 1rem 0 1rem 1rem;
 }
@@ -383,18 +387,20 @@ useHead({
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--color-border) 76%, transparent);
   border-radius: 0.85rem;
-  background: rgb(0 0 0 / 22%);
+  background: radial-gradient(circle at 18% 8%, rgb(255 255 255 / 9%), transparent 32%), rgb(0 0 0 / 24%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 6%),
+    0 18px 44px rgb(0 0 0 / 18%);
 }
 
 .case-preview > .case-browser {
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
 }
 
 .case-preview-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
   gap: 0.6rem;
-  margin-top: 0.75rem;
 }
 
 .case-mini-browser {
@@ -403,7 +409,8 @@ useHead({
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--color-border) 76%, transparent);
   border-radius: 0.7rem;
-  background: rgb(0 0 0 / 22%);
+  background: radial-gradient(circle at 22% 10%, rgb(255 255 255 / 8%), transparent 34%), rgb(0 0 0 / 24%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 5%);
 }
 
 .case-mini-browser::after {
@@ -415,10 +422,11 @@ useHead({
 }
 
 .case-mini-browser img {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top left;
+  object-fit: contain;
+  object-position: center top;
   opacity: 0.82;
   filter: brightness(0.72) saturate(0.88);
   transform: scale(1);
@@ -483,6 +491,8 @@ useHead({
 }
 
 .case-screen {
+  display: grid;
+  place-items: center;
   position: relative;
   height: calc(100% - 1.85rem);
   overflow: hidden;
@@ -500,10 +510,11 @@ useHead({
 }
 
 .case-screen-img {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top left;
+  object-fit: contain;
+  object-position: center top;
   opacity: 0.82;
   filter: brightness(0.72) saturate(0.88);
   transform: scale(1);
@@ -800,6 +811,10 @@ useHead({
 
   .case-preview-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .case-preview > .case-browser {
+    aspect-ratio: 1.72 / 1;
   }
 
   .btn-primary {

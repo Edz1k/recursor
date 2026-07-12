@@ -75,7 +75,7 @@ export const CASES = [
       { image: konturServicesPreview, label: 'Дополнительные услуги', alt: 'Дополнительные услуги сайта KONTUR' },
     ],
     browserLabel: 'kontur.kz',
-    siteUrl: '',
+    siteUrl: 'https://kontur-v.kz/',
   },
   {
     slug: 'brillex',
@@ -184,7 +184,7 @@ export const CASES = [
       { image: megabetonPricesPreview, label: 'Цены М150–М400', alt: 'Карточки цен на бетон MEGA BETON' },
     ],
     browserLabel: 'megabeton.kz',
-    siteUrl: '',
+    siteUrl: 'https://mg-beton.kz/',
   },
   {
     slug: 'amo-logistics',
@@ -236,7 +236,7 @@ export const CASES = [
       { image: amoLogisticsContactsPreview, label: 'Контакты и форма', alt: 'Контактная форма и контактный блок AMO Logistics' },
     ],
     browserLabel: 'amo-logistics',
-    siteUrl: '',
+    siteUrl: 'https://amologistics.kz/',
   },
 ] as const
 

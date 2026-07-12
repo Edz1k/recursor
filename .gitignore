@@ -12,3 +12,4 @@ public/assets/fonts
 .env
 .env.local
 .claude
+.agents

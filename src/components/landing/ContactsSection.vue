@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import ContactMap from '~/components/contact/ContactMap.vue'
+import ContactWhatsAppPicker from '~/components/contact/ContactWhatsAppPicker.vue'
+
 const ctaNotes = [
   'Первая консультация бесплатно',
   'Ответим в течение рабочего дня',
@@ -9,16 +12,34 @@ const ctaNotes = [
 const contactLinks = [
   { label: '+7 707 485 23 28', href: 'tel:+77074852328' },
   { label: '+7 775 144 20 23', href: 'tel:+77751442023' },
-  { label: 'Алматы, ул. Ораза Жандосова, 98, БЦ «Навои»', href: '#' },
   { label: 'hello@recursor.kz', href: 'mailto:hello@recursor.kz' },
 ]
 
-const socialLinks = [
-  { label: 'Telegram-канал', href: '#' },
+const studioAddress = [
+  'Алматы, ул. Ораза Жандосова, 98',
+  'БЦ «Навои»',
+]
+
+const studioLocation = {
+  address: ['БЦ «Навои»'],
+  office: '7 этаж, офис 701',
+  link: 'https://go.2gis.com/LFMmu',
+  label: 'Мы!',
+}
+
+const primarySocialLinks = [
   { label: 'Telegram личка', href: '#' },
-  { label: 'WhatsApp', href: 'https://wa.me/77074852328' },
+  { label: 'Telegram-канал', href: '#' },
+]
+
+const socialLinksAfterWhatsApp = [
   { label: 'Instagram', href: '#' },
   { label: 'TikTok', href: '#' },
+]
+
+const whatsappNumbers = [
+  { label: '+7 707 485 23 28', href: 'https://wa.me/77074852328' },
+  { label: '+7 775 144 20 23', href: 'https://wa.me/77751442023' },
 ]
 </script>
 
@@ -45,9 +66,11 @@ const socialLinks = [
           <a class="contacts-primary-link" href="#contact-form">
             Договориться о брифе
           </a>
-          <a class="contacts-secondary-link" href="https://wa.me/77074852328" target="_blank" rel="noreferrer">
-            Написать в WhatsApp
-          </a>
+          <ContactWhatsAppPicker
+            :numbers="whatsappNumbers"
+            label="Написать в WhatsApp"
+            variant="action"
+          />
         </div>
 
         <ul class="contacts-notes" aria-label="Важные пометки">
@@ -89,36 +112,57 @@ const socialLinks = [
           </button>
         </form>
 
-        <div class="contacts-info">
-          <div>
-            <h3>Контакты</h3>
-            <div class="contacts-link-list">
-              <a
-                v-for="link in contactLinks"
-                :key="link.label"
-                class="contacts-text-link"
-                :href="link.href"
-              >
-                {{ link.label }}
-              </a>
+        <div class="contacts-lower">
+          <div class="contacts-info">
+            <div>
+              <h3>Контакты</h3>
+              <div class="contacts-link-list">
+                <a
+                  v-for="link in contactLinks"
+                  :key="link.label"
+                  class="contacts-text-link"
+                  :href="link.href"
+                >
+                  {{ link.label }}
+                </a>
+                <address class="contacts-address">
+                  <span v-for="line in studioAddress" :key="line">{{ line }}</span>
+                  <span>{{ studioLocation.office }}</span>
+                </address>
+              </div>
+            </div>
+
+            <div>
+              <h3>Соцсети и мессенджеры</h3>
+              <div class="contacts-socials">
+                <ContactWhatsAppPicker :numbers="whatsappNumbers" />
+
+                <a
+                  v-for="link in primarySocialLinks"
+                  :key="link.label"
+                  class="contacts-social-link"
+                  :href="link.href"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ link.label }}
+                </a>
+
+                <a
+                  v-for="link in socialLinksAfterWhatsApp"
+                  :key="link.label"
+                  class="contacts-social-link"
+                  :href="link.href"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ link.label }}
+                </a>
+              </div>
             </div>
           </div>
 
-          <div>
-            <h3>Соцсети и мессенджеры</h3>
-            <div class="contacts-socials">
-              <a
-                v-for="link in socialLinks"
-                :key="link.label"
-                class="contacts-social-link"
-                :href="link.href"
-                target="_blank"
-                rel="noreferrer"
-              >
-                {{ link.label }}
-              </a>
-            </div>
-          </div>
+          <ContactMap v-bind="studioLocation" />
         </div>
       </aside>
     </div>
@@ -408,11 +452,18 @@ const socialLinks = [
   margin-top: 0.25rem;
 }
 
+.contacts-lower {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 230px);
+  gap: 1.5rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--contacts-border);
+  align-items: start;
+}
+
 .contacts-info {
   display: grid;
   gap: 1.35rem;
-  padding-top: 1.35rem;
-  border-top: 1px solid var(--contacts-border);
 }
 
 .contacts-link-list,
@@ -426,6 +477,14 @@ const socialLinks = [
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.contacts-address {
+  display: grid;
+  gap: 0.18rem;
+  color: var(--contacts-muted);
+  font-style: normal;
+  line-height: 1.45;
+}
+
 .contacts-text-link,
 .contacts-social-link {
   position: relative;
@@ -433,10 +492,11 @@ const socialLinks = [
   color: var(--contacts-muted);
   line-height: 1.45;
   text-decoration: none;
+  opacity: 0.82;
+  outline: none;
   transition:
-    color 300ms ease,
-    text-shadow 300ms ease,
-    transform 300ms ease;
+    color 240ms ease,
+    opacity 240ms ease;
 }
 
 .contacts-text-link::after,
@@ -458,8 +518,12 @@ const socialLinks = [
 .contacts-social-link:hover,
 .contacts-social-link:focus-visible {
   color: var(--contacts-text);
-  text-shadow: 0 0 14px color-mix(in srgb, var(--contacts-text) 12%, transparent);
-  transform: translateX(3px);
+  opacity: 1;
+}
+
+.contacts-social-link:focus-visible {
+  border-radius: 0.2rem;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--contacts-text) 12%, transparent);
 }
 
 .contacts-text-link:hover::after,
@@ -498,6 +562,11 @@ const socialLinks = [
 
   .contacts-card {
     border-radius: 1.1rem;
+  }
+
+  .contacts-lower {
+    grid-template-columns: 1fr;
+    min-width: 0;
   }
 }
 

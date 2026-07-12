@@ -11,8 +11,17 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AboutStudioSection: typeof import('./components/AboutStudioSection.vue')['default']
     CaseDetailPage: typeof import('./components/cases/CaseDetailPage.vue')['default']
+    ContactMap: typeof import('./components/contact/ContactMap.vue')['default']
     ContactsSection: typeof import('./components/landing/ContactsSection.vue')['default']
+    ContactWhatsAppPicker: typeof import('./components/contact/ContactWhatsAppPicker.vue')['default']
+    HomeCanvasBackdrop: typeof import('./components/landing/HomeCanvasBackdrop.vue')['default']
+    HomeCtaSection: typeof import('./components/landing/HomeCtaSection.vue')['default']
+    HomeHeroSection: typeof import('./components/landing/HomeHeroSection.vue')['default']
+    HomeMarquee: typeof import('./components/landing/HomeMarquee.vue')['default']
+    HomeProcessSection: typeof import('./components/landing/HomeProcessSection.vue')['default']
+    HomeServicesSection: typeof import('./components/landing/HomeServicesSection.vue')['default']
     ProjectDiscussDialog: typeof import('./components/landing/ProjectDiscussDialog.vue')['default']
     README: typeof import('./components/README.md')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

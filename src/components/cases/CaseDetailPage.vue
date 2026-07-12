@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import type { CaseSlug } from '~/data/cases'
 import { Motion } from 'motion-v'
+import { useProjectDiscussDialog } from '~/composables/useProjectDiscussDialog'
 import { getCaseBySlug } from '~/data/cases'
 
 const props = defineProps<{
   slug: CaseSlug
 }>()
 
-const isDiscussOpen = shallowRef(false)
+const { isDiscussOpen, openDiscussDialog } = useProjectDiscussDialog()
 const item = computed(() => getCaseBySlug(props.slug))
 
 const SPRING_MEDIUM = { type: 'spring', stiffness: 110, damping: 20 } as const
 const SPRING_SNAPPY = { type: 'spring', stiffness: 200, damping: 22 } as const
 
 useHead(() => ({
-  title: item.value ? `${item.value.title} — кейс Recursor.kz` : 'Кейс — Recursor.kz',
+  title: item.value ? `${item.value.title}, кейс Recursor.kz` : 'Кейс, Recursor.kz',
 }))
 </script>
 
@@ -23,7 +24,8 @@ useHead(() => ({
     <section class="case-hero" aria-labelledby="case-title">
       <div class="case-container">
         <RouterLink to="/cases" class="back-link">
-          ← Кейсы
+          <span class="i-carbon-arrow-left" aria-hidden="true" />
+          Кейсы
         </RouterLink>
 
         <Motion
@@ -172,20 +174,20 @@ useHead(() => ({
               rel="noopener"
             >
               Открыть сайт
-              <span aria-hidden="true">→</span>
+              <span class="i-carbon-arrow-right" aria-hidden="true" />
             </a>
             <span v-else class="btn-secondary btn-disabled" aria-disabled="true">
               Открыть сайт
-              <span aria-hidden="true">→</span>
+              <span class="i-carbon-arrow-right" aria-hidden="true" />
             </span>
             <Motion
               :while-hover="{ y: -3, scale: 1.04 }"
               :while-tap="{ scale: 0.96 }"
               :transition="SPRING_SNAPPY"
             >
-              <button type="button" class="btn-primary" @click="isDiscussOpen = true">
+              <button type="button" class="btn-primary" @click="openDiscussDialog">
                 Хочу похожий проект
-                <span aria-hidden="true">→</span>
+                <span class="i-carbon-arrow-right" aria-hidden="true" />
               </button>
             </Motion>
           </div>
@@ -216,6 +218,8 @@ useHead(() => ({
 
 .back-link {
   display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   margin-bottom: 2rem;
   color: var(--color-muted);
   font-size: 0.9rem;
@@ -295,14 +299,16 @@ useHead(() => ({
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--color-border) 76%, transparent);
   border-radius: 1rem;
-  background: rgb(0 0 0 / 22%);
-  box-shadow: 0 22px 56px rgb(0 0 0 / 20%);
+  background: radial-gradient(circle at 18% 8%, rgb(255 255 255 / 9%), transparent 32%), rgb(0 0 0 / 24%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 6%),
+    0 22px 56px rgb(0 0 0 / 20%);
 }
 
 .hero-browser {
   width: 100%;
   max-width: 47.5rem;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   justify-self: end;
 }
 
@@ -338,6 +344,8 @@ useHead(() => ({
 
 .case-screen,
 .gallery-screen {
+  display: grid;
+  place-items: center;
   position: relative;
   overflow: hidden;
   background:
@@ -362,7 +370,8 @@ useHead(() => ({
 .gallery-img {
   display: block;
   width: 100%;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
   object-position: top center;
   opacity: 0.84;
   filter: brightness(0.74) saturate(0.9);
@@ -373,8 +382,7 @@ useHead(() => ({
 }
 
 .gallery-img {
-  height: auto;
-  min-height: 24rem;
+  min-height: 0;
 }
 
 .gallery-placeholder {
@@ -507,11 +515,11 @@ useHead(() => ({
 }
 
 .gallery-browser {
-  min-height: 18rem;
+  aspect-ratio: 16 / 9;
 }
 
 .gallery-grid .gallery-browser:first-child {
-  min-height: 24rem;
+  aspect-ratio: 16 / 9;
 }
 
 .cta-card {
@@ -639,6 +647,7 @@ useHead(() => ({
 
   .hero-browser {
     margin-top: 0.35rem;
+    aspect-ratio: 1.72 / 1;
   }
 
   .case-section,
@@ -657,8 +666,9 @@ useHead(() => ({
     width: 100%;
   }
 
-  .gallery-img {
-    min-height: 16rem;
+  .gallery-browser,
+  .gallery-grid .gallery-browser:first-child {
+    aspect-ratio: 1.72 / 1;
   }
 
   .gallery-placeholder {
