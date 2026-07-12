@@ -32,8 +32,7 @@ const methodSteps = [
   },
 ] as const
 
-const checklist = ['Бриф', 'UX', 'UI', 'Код', 'Запуск'] as const
-const floatingLabels = ['стратегия', 'доверие', 'заявки'] as const
+const checklist = ['Бриф', 'UX', 'UI', 'Разработка', 'Запуск'] as const
 
 const { isDiscussOpen, openDiscussDialog } = useProjectDiscussDialog()
 
@@ -79,42 +78,31 @@ useScrollReveal()
           </div>
 
           <aside class="planner-card" data-reveal style="--reveal-delay: 180ms" aria-label="Подход Recursor">
-            <span
-              v-for="(label, index) in floatingLabels"
-              :key="label"
-              class="floating-label"
-              :class="`floating-label-${index + 1}`"
-              aria-hidden="true"
-            >
-              {{ label }}
-            </span>
-
             <div class="planner-header">
               <div>
                 <p class="planner-eyebrow">
                   Метод Recursor
                 </p>
                 <h2>Проектная доска</h2>
+                <p class="planner-description">
+                  Показываем, как превращаем задачу в понятный цифровой продукт.
+                </p>
               </div>
-              <span class="planner-status">карта проекта</span>
             </div>
 
-            <div class="planner-meta" aria-label="Контроль проекта">
-              <div class="clarity-widget">
-                <div class="clarity-head">
-                  <span>ясность проекта</span>
-                  <strong>92%</strong>
-                </div>
-                <div class="clarity-track" aria-hidden="true">
-                  <span />
-                </div>
+            <div class="planner-meta" aria-label="Основа и этапы проекта">
+              <div class="project-foundation">
+                <span class="meta-label">Основа проекта</span>
+                <strong>Структура, путь клиента и ключевое действие</strong>
               </div>
 
               <div class="checklist" aria-label="Этапы готовности">
-                <span v-for="item in checklist" :key="item">
-                  <span class="check-icon" aria-hidden="true" />
-                  {{ item }}
-                </span>
+                <span class="meta-label">Процесс</span>
+                <div class="checklist-items">
+                  <span v-for="item in checklist" :key="item">
+                    {{ item }}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -383,40 +371,20 @@ useScrollReveal()
 .planner-card {
   position: relative;
   overflow: hidden;
-  padding: clamp(1.15rem, 2vw, 1.55rem);
+  padding: clamp(1.25rem, 2.2vw, 1.75rem);
   border: 1px solid var(--about-border-strong);
   border-radius: 1.35rem;
-  background:
-    radial-gradient(circle at 20% 0%, rgb(255 255 255 / 22%), transparent 34%),
-    linear-gradient(145deg, var(--about-card-strong), var(--about-card));
+  background: linear-gradient(145deg, var(--about-card-strong), var(--about-card));
   box-shadow: var(--about-card-shadow);
-  backdrop-filter: blur(22px);
+  backdrop-filter: blur(18px);
 }
 
 .planner-card::before {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background:
-    linear-gradient(90deg, var(--about-soft) 1px, transparent 1px),
-    linear-gradient(var(--about-soft) 1px, transparent 1px);
-  background-size: 3.6rem 3.6rem;
+  background: linear-gradient(135deg, rgb(255 255 255 / 5%), transparent 42%);
   content: '';
-  mask-image: linear-gradient(135deg, #000, transparent 74%);
-  pointer-events: none;
-}
-
-.planner-card::after {
-  position: absolute;
-  right: 12%;
-  bottom: -8rem;
-  width: 18rem;
-  height: 18rem;
-  border-radius: 999px;
-  background: var(--about-accent-soft);
-  content: '';
-  filter: blur(38px);
-  opacity: 0.72;
   pointer-events: none;
 }
 
@@ -432,7 +400,7 @@ useScrollReveal()
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 1.1rem;
+  margin-bottom: 1.35rem;
 }
 
 .planner-eyebrow {
@@ -452,105 +420,77 @@ useScrollReveal()
   line-height: 1.08;
 }
 
-.planner-status {
-  display: inline-flex;
-  min-height: 1.85rem;
-  align-items: center;
-  flex-shrink: 0;
-  padding: 0 0.68rem;
-  border: 1px solid var(--about-border);
-  border-radius: 999px;
-  background: var(--about-soft);
+.planner-description {
+  max-width: 31rem;
+  margin: 0.75rem 0 0;
   color: var(--about-muted);
-  font-size: 0.72rem;
-  font-weight: 850;
+  font-size: 0.92rem;
+  line-height: 1.55;
 }
 
 .planner-meta {
   display: grid;
-  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: 0.75rem;
-  margin-bottom: 0.9rem;
+  margin-bottom: 1rem;
 }
 
-.clarity-widget,
+.project-foundation,
 .checklist {
   border: 1px solid var(--about-border);
   border-radius: 1rem;
   background: var(--about-soft);
-  backdrop-filter: blur(16px);
 }
 
-.clarity-widget {
+.project-foundation {
   display: grid;
   align-content: center;
-  min-height: 4.55rem;
-  gap: 0.7rem;
-  padding: 0.82rem;
+  min-height: 5.2rem;
+  gap: 0.5rem;
+  padding: 0.9rem;
 }
 
-.clarity-head {
+.meta-label {
+  color: var(--about-muted);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-foundation strong {
+  color: var(--about-text);
+  font-size: 0.9rem;
+  font-weight: 850;
+  line-height: 1.4;
+}
+
+.checklist {
+  display: grid;
+  align-content: center;
+  min-height: 5.2rem;
+  gap: 0.55rem;
+  padding: 0.9rem;
+}
+
+.checklist-items {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0;
+}
+
+.checklist-items > span {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.8rem;
   color: var(--about-muted);
   font-size: 0.78rem;
   font-weight: 800;
 }
 
-.clarity-head strong {
-  color: var(--about-text);
-  font-family: 'DM Mono', ui-monospace, monospace;
-  font-size: 0.9rem;
-  font-weight: 850;
-  font-variant-numeric: tabular-nums;
-}
-
-.clarity-track {
-  height: 0.42rem;
-  overflow: hidden;
-  border-radius: 999px;
-  background: var(--about-soft-strong);
-}
-
-.clarity-track span {
-  display: block;
-  width: 92%;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, var(--about-accent), color-mix(in srgb, var(--about-accent) 48%, white));
-}
-
-.checklist {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.38rem;
-  align-content: center;
-  min-height: 4.55rem;
-  padding: 0.72rem;
-}
-
-.checklist > span {
-  display: inline-flex;
-  min-height: 1.75rem;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0 0.58rem;
-  border: 1px solid var(--about-border);
-  border-radius: 999px;
-  background: var(--about-card);
-  color: var(--about-muted);
-  font-size: 0.74rem;
-  font-weight: 800;
-}
-
-.check-icon {
-  width: 0.42rem;
-  height: 0.42rem;
-  border-radius: 999px;
-  background: var(--about-accent);
-  flex-shrink: 0;
+.checklist-items > span:not(:last-child)::after {
+  margin: 0 0.42rem;
+  color: var(--about-border-strong);
+  content: '/';
 }
 
 .method-list {
@@ -582,8 +522,7 @@ useScrollReveal()
   padding: 0.72rem 0.82rem;
   border: 1px solid var(--about-border);
   border-radius: 1rem;
-  background: color-mix(in srgb, var(--about-card) 72%, transparent);
-  backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--about-card) 58%, transparent);
 }
 
 .method-num {
@@ -620,55 +559,6 @@ useScrollReveal()
   color: var(--about-muted);
   font-size: 0.84rem;
   line-height: 1.45;
-}
-
-.floating-label {
-  position: absolute;
-  z-index: 2;
-  display: inline-flex;
-  min-height: 1.75rem;
-  align-items: center;
-  padding: 0 0.62rem;
-  border: 1px solid var(--about-border);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--about-card) 84%, transparent);
-  box-shadow: 0 14px 36px rgb(0 0 0 / 10%);
-  color: var(--about-muted);
-  font-family: 'DM Mono', ui-monospace, monospace;
-  font-size: 0.66rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  pointer-events: none;
-  backdrop-filter: blur(16px);
-  animation: float-label 8s ease-in-out infinite;
-}
-
-.floating-label-1 {
-  top: 5.9rem;
-  right: 1rem;
-}
-
-.floating-label-2 {
-  top: 49%;
-  left: 0.95rem;
-  animation-delay: -2.2s;
-}
-
-.floating-label-3 {
-  right: 1.1rem;
-  bottom: 1rem;
-  animation-delay: -4.4s;
-}
-
-@keyframes float-label {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  50% {
-    transform: translate3d(0, -0.55rem, 0);
-  }
 }
 
 [data-reveal] {
@@ -735,10 +625,6 @@ useScrollReveal()
     flex-direction: column;
   }
 
-  .planner-status {
-    min-height: 1.7rem;
-  }
-
   .method-step {
     min-height: auto;
     align-items: start;
@@ -753,19 +639,9 @@ useScrollReveal()
     width: 2.25rem;
     height: 2.25rem;
   }
-
-  .floating-label {
-    display: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .floating-label {
-    animation: none;
-    transform: none;
-    will-change: auto;
-  }
-
   [data-reveal] {
     opacity: 1;
     transform: none;
