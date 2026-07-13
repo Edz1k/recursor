@@ -44,23 +44,26 @@ function scrollToTop() {
         <div class="footer-cta-card">
           <div class="footer-grid-lines" aria-hidden="true" />
           <p class="footer-cta-kicker">
-            Recursor.kz
+            RECURSOR.KZ
           </p>
           <h2 id="footer-cta-title" class="footer-cta-title">
-            Ваш следующий проект начинается здесь.
+            Ваш проект начинается с разговора
           </h2>
           <p class="footer-cta-text">
-            Расскажите нам о задаче — мы найдём решение для любого бизнеса с нуля.
+            Расскажите о задаче — разберёмся в целях, предложим структуру и соберём решение именно под ваш бизнес.
           </p>
           <RouterLink class="footer-primary-button" to="/contacts#contact-form">
             <span>Обсудить проект</span>
           </RouterLink>
-          <p class="footer-trust-text">
-            Работаем по договору • Поддерживаем после запуска •
-            <span class="footer-fast-reply">
-              <span class="footer-status-dot" aria-hidden="true" />
-              Отвечаем быстро
-            </span>
+          <p
+            class="footer-trust-text"
+            aria-label="Индивидуальный подход, работа по договору, поддержка после запуска"
+          >
+            <span>Индивидуальный подход</span>
+            <span class="footer-trust-separator" aria-hidden="true">•</span>
+            <span>Работа по договору</span>
+            <span class="footer-trust-separator" aria-hidden="true">•</span>
+            <span>Поддержка после запуска</span>
           </p>
         </div>
       </div>

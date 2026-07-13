@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
 import CasesHeroBackground from '~/components/cases/CasesHeroBackground.vue'
-import { useProjectDiscussDialog } from '~/composables/useProjectDiscussDialog'
 import { CASES, HERO_BADGES, PROCESS_STEPS } from '~/data/cases'
 
 defineOptions({
   name: 'CasesPage',
 })
 
-const { isDiscussOpen, openDiscussDialog } = useProjectDiscussDialog()
-
 const SPRING_MEDIUM = { type: 'spring', stiffness: 110, damping: 20 } as const
-const SPRING_SNAPPY = { type: 'spring', stiffness: 200, damping: 22 } as const
 
 const heroBackgroundPreviews = [
   { src: CASES[1].image },
@@ -182,33 +178,6 @@ useHead({
         </ol>
       </div>
     </section>
-
-    <section class="cases-cta" aria-labelledby="cta-title">
-      <div class="cases-container">
-        <div class="cta-card">
-          <p class="section-kicker">
-            Старт
-          </p>
-          <h2 id="cta-title" class="cta-title">
-            Хотите похожий проект?
-          </h2>
-          <p class="cta-text">
-            Разберём вашу задачу, предложим структуру и покажем, как упаковать проект в понятный цифровой продукт.
-          </p>
-          <Motion
-            :while-hover="{ y: -3, scale: 1.04 }"
-            :while-tap="{ scale: 0.96 }"
-            :transition="SPRING_SNAPPY"
-          >
-            <button type="button" class="btn-primary" @click="openDiscussDialog">
-              Обсудить проект
-            </button>
-          </Motion>
-        </div>
-      </div>
-    </section>
-
-    <ProjectDiscussDialog v-model:open="isDiscussOpen" />
   </main>
 </template>
 
@@ -344,8 +313,7 @@ useHead({
 }
 
 .cases-section,
-.process-section,
-.cases-cta {
+.process-section {
   padding: 4.5rem 0;
 }
 
@@ -722,58 +690,6 @@ useHead({
   font-size: 0.72rem;
 }
 
-.cta-card {
-  display: flex;
-  align-items: center;
-  padding: 3rem;
-  border: 1px solid var(--color-border);
-  border-radius: 1rem;
-  background:
-    radial-gradient(circle at 80% 10%, rgb(127 219 202 / 10%), transparent 24rem),
-    linear-gradient(135deg, rgb(255 255 255 / 5%), transparent 48%), var(--color-background);
-  text-align: center;
-  flex-direction: column;
-}
-
-.cta-title {
-  margin: 0;
-  color: var(--color-foreground);
-  font-size: clamp(2.2rem, 5vw, 4.4rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.04em;
-}
-
-.cta-text {
-  max-width: 38rem;
-  margin: 1.2rem 0 2rem;
-  color: var(--color-muted-foreground);
-  font-size: 1rem;
-  line-height: 1.75;
-}
-
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 2.875rem;
-  padding: 0 1.625rem;
-  border: none;
-  border-radius: 0.625rem;
-  background: var(--color-main);
-  color: var(--color-main-foreground);
-  font-size: 0.9375rem;
-  font-weight: 800;
-  cursor: pointer;
-  outline: none;
-  box-shadow: 0 4px 18px rgb(0 0 0 / 18%);
-  will-change: transform;
-}
-
-.btn-primary:focus-visible {
-  box-shadow: 0 0 0 2px var(--color-ring);
-}
-
 @media (min-width: 760px) {
   .process-steps {
     grid-template-columns: repeat(3, 1fr);
@@ -816,8 +732,7 @@ useHead({
   }
 
   .cases-section,
-  .process-section,
-  .cases-cta {
+  .process-section {
     padding: 3.5rem 0;
   }
 
@@ -832,10 +747,6 @@ useHead({
 
   .case-preview > .case-browser {
     aspect-ratio: 1.72 / 1;
-  }
-
-  .btn-primary {
-    width: 100%;
   }
 }
 
