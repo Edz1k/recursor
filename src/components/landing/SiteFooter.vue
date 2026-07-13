@@ -1,39 +1,33 @@
 <script setup lang="ts">
+import ContactWhatsAppPicker from '~/components/contact/ContactWhatsAppPicker.vue'
+import {
+  studioAddress,
+  studioEmail,
+  studioPhones,
+  telegramOptions,
+  whatsappOptions,
+} from '~/data/contact'
+
 const navigationLinks = [
-  { label: 'Главная', href: '/' },
-  { label: 'О нас', href: '/#about' },
-  { label: 'Как работаем', href: '/#work' },
-  { label: 'Портфолио', href: '/#portfolio' },
-  { label: 'Контакты', href: '/contacts' },
-]
+  { label: 'Главная', to: '/' },
+  { label: 'Кейсы', to: '/cases' },
+  { label: 'О нас', to: '/about' },
+  { label: 'Контакты', to: '/contacts' },
+] as const
 
-const serviceLinks = [
-  { label: 'Разработка сайтов', href: '/contacts#contact-form' },
-  { label: 'Решения для бизнеса с нуля', href: '/contacts#contact-form' },
-  { label: 'Поддержка сайта', href: '/contacts#contact-form' },
-  { label: 'Ведение и развитие проекта', href: '/contacts#contact-form' },
-]
+const services = [
+  'Разработка сайтов',
+  'UX/UI-дизайн',
+  'Решения для бизнеса',
+  'Поддержка и развитие',
+] as const
 
-const contactLinks = [
-  { label: 'Алматы, БЦ Навои', href: '#' },
-  { label: '+7 XXX XXX XX XX', href: 'tel:+7XXXXXXXXXX' },
-  { label: '+7 XXX XXX XX XX', href: 'tel:+7XXXXXXXXXX' },
-  { label: 'hello@recursor.kz', href: 'mailto:hello@recursor.kz' },
-  { label: 'Telegram', href: '#' },
-  { label: 'WhatsApp', href: '#' },
-]
+const currentYear = new Date().getFullYear()
 
-const socialLinks = [
-  { label: 'Instagram', href: '#' },
-  { label: 'TikTok', href: '#' },
-  { label: 'Telegram', href: '#' },
-  { label: 'WhatsApp', href: '#' },
-]
-
-const legalLinks = [
-  { label: 'Политика конфиденциальности', href: '#' },
-  { label: 'Пользовательское соглашение', href: '#' },
-]
+function scrollToTop() {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' })
+}
 </script>
 
 <template>
@@ -58,9 +52,9 @@ const legalLinks = [
           <p class="footer-cta-text">
             Расскажите нам о задаче — мы найдём решение для любого бизнеса с нуля.
           </p>
-          <a class="footer-primary-button" href="/contacts#contact-form">
+          <RouterLink class="footer-primary-button" to="/contacts#contact-form">
             <span>Обсудить проект</span>
-          </a>
+          </RouterLink>
           <p class="footer-trust-text">
             Работаем по договору • Поддерживаем после запуска •
             <span class="footer-fast-reply">
@@ -76,11 +70,11 @@ const legalLinks = [
       <div class="footer-container">
         <div class="footer-grid">
           <div class="footer-brand footer-panel">
-            <a class="footer-logo" href="/">
+            <RouterLink class="footer-logo" to="/">
               Recursor.kz
-            </a>
+            </RouterLink>
             <p class="footer-description">
-              Разрабатываем сайты под любые задачи: от идеи и первого прототипа до запуска, поддержки и дальнейшего развития проекта.
+              Проектируем и разрабатываем сайты как цифровые продукты — от структуры и дизайна до запуска и поддержки.
             </p>
           </div>
 
@@ -88,74 +82,71 @@ const legalLinks = [
             <h3 class="footer-column-title">
               Навигация
             </h3>
-            <a
+            <RouterLink
               v-for="link in navigationLinks"
-              :key="link.label"
+              :key="link.to"
               class="footer-link"
-              :href="link.href"
+              :to="link.to"
             >
               {{ link.label }}
-            </a>
+            </RouterLink>
           </nav>
 
-          <nav class="footer-column footer-panel" aria-label="Услуги">
+          <div class="footer-column footer-panel" aria-label="Услуги">
             <h3 class="footer-column-title">
               Услуги
             </h3>
-            <a
-              v-for="link in serviceLinks"
-              :key="link.label"
-              class="footer-link"
-              :href="link.href"
-            >
-              {{ link.label }}
-            </a>
-          </nav>
+            <span v-for="service in services" :key="service" class="footer-service">
+              {{ service }}
+            </span>
+          </div>
 
           <address class="footer-column footer-panel footer-contacts">
             <h3 class="footer-column-title">
               Контакты
             </h3>
+            <div class="footer-address">
+              <span v-for="line in studioAddress" :key="line">{{ line }}</span>
+            </div>
             <a
-              v-for="link in contactLinks"
-              :key="link.label"
+              v-for="phone in studioPhones"
+              :key="phone.href"
               class="footer-link footer-contact-link"
-              :href="link.href"
+              :href="phone.href"
             >
-              {{ link.label }}
+              {{ phone.label }}
+            </a>
+            <a class="footer-link footer-contact-link" :href="studioEmail.href">
+              {{ studioEmail.label }}
             </a>
           </address>
         </div>
 
-        <div class="footer-socials" aria-label="Социальные сети">
-          <a
-            v-for="link in socialLinks"
-            :key="link.label"
-            class="footer-social-link"
-            :href="link.href"
-          >
-            {{ link.label }}
-          </a>
+        <div class="footer-socials" aria-label="Мессенджеры">
+          <ContactWhatsAppPicker
+            :numbers="telegramOptions"
+            label="Telegram"
+            title="Кому написать в Telegram?"
+            description="Выберите контакт"
+            variant="social"
+          />
+          <ContactWhatsAppPicker
+            :numbers="whatsappOptions"
+            label="WhatsApp"
+            title="Кому написать в WhatsApp"
+            description="Выберите один из двух рабочих номеров."
+            variant="social"
+          />
         </div>
 
         <div class="footer-bottom">
           <p class="footer-copyright">
-            © 2026 Recursor.kz. Все права защищены.
+            © {{ currentYear }} Recursor Web Studio
           </p>
-
-          <nav class="footer-legal" aria-label="Юридическая информация">
-            <a
-              v-for="link in legalLinks"
-              :key="link.label"
-              :href="link.href"
-            >
-              {{ link.label }}
-            </a>
-          </nav>
-
-          <p class="footer-made">
-            Made in Kazakhstan
-          </p>
+          <button class="footer-to-top" type="button" @click="scrollToTop">
+            <span>Наверх</span>
+            <span aria-hidden="true">↑</span>
+          </button>
         </div>
       </div>
     </section>
