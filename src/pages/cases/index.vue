@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
+import CasesHeroBackground from '~/components/cases/CasesHeroBackground.vue'
 import { useProjectDiscussDialog } from '~/composables/useProjectDiscussDialog'
 import { CASES, HERO_BADGES, PROCESS_STEPS } from '~/data/cases'
 
@@ -12,6 +13,13 @@ const { isDiscussOpen, openDiscussDialog } = useProjectDiscussDialog()
 const SPRING_MEDIUM = { type: 'spring', stiffness: 110, damping: 20 } as const
 const SPRING_SNAPPY = { type: 'spring', stiffness: 200, damping: 22 } as const
 
+const heroBackgroundPreviews = [
+  { src: CASES[1].image },
+  { src: CASES[0].previewImages[0].image },
+  { src: CASES[3].previewImages[0].image },
+  { src: CASES[2].gallery[3].image },
+] as const
+
 useHead({
   title: 'Кейсы, Recursor.kz',
 })
@@ -20,6 +28,7 @@ useHead({
 <template>
   <main class="cases-page">
     <section class="cases-hero" aria-labelledby="cases-title">
+      <CasesHeroBackground :previews="heroBackgroundPreviews" />
       <div class="cases-container">
         <Motion
           class="cases-hero-inner"
@@ -216,8 +225,16 @@ useHead({
 }
 
 .cases-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding: 7rem 0 3rem;
   background: radial-gradient(circle at 78% 8%, rgb(130 170 255 / 10%), transparent 28rem), var(--color-background);
+}
+
+.cases-hero > .cases-container {
+  position: relative;
+  z-index: 1;
 }
 
 .cases-hero-inner {

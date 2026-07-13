@@ -13,6 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AboutStudioSection: typeof import('./components/AboutStudioSection.vue')['default']
     CaseDetailPage: typeof import('./components/cases/CaseDetailPage.vue')['default']
+    CasesHeroBackground: typeof import('./components/cases/CasesHeroBackground.vue')['default']
     ContactMap: typeof import('./components/contact/ContactMap.vue')['default']
     ContactsSection: typeof import('./components/landing/ContactsSection.vue')['default']
     ContactWhatsAppPicker: typeof import('./components/contact/ContactWhatsAppPicker.vue')['default']
