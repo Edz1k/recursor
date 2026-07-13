@@ -14,18 +14,28 @@ import {
   PopoverTrigger,
 } from 'reka-ui'
 
-interface WhatsAppNumber {
+interface ContactOption {
   label: string
   href: string
+  description?: string
 }
 
 const props = defineProps<{
-  numbers: WhatsAppNumber[]
+  numbers: ContactOption[]
   label?: string
+  title?: string
+  description?: string
   variant?: 'social' | 'action'
 }>()
 
 const isMobile = useMediaQuery('(max-width: 620px)')
+const isPopoverOpen = shallowRef(false)
+const pickerTitleId = useId()
+const route = useRoute()
+
+watch(() => route.fullPath, () => {
+  isPopoverOpen.value = false
+})
 </script>
 
 <template>
@@ -33,7 +43,10 @@ const isMobile = useMediaQuery('(max-width: 620px)')
     <DialogTrigger as-child>
       <button
         class="whatsapp-trigger"
-        :class="{ 'whatsapp-trigger-action': props.variant === 'action' }"
+        :class="{
+          'whatsapp-trigger-action': props.variant === 'action',
+          'whatsapp-trigger-social': props.variant === 'social',
+        }"
         type="button"
       >
         {{ props.label ?? 'WhatsApp' }}
@@ -46,10 +59,10 @@ const isMobile = useMediaQuery('(max-width: 620px)')
         <div class="whatsapp-sheet-handle" aria-hidden="true" />
         <div class="whatsapp-heading">
           <DialogTitle class="whatsapp-title">
-            Выберите номер
+            {{ props.title ?? 'Выберите номер' }}
           </DialogTitle>
           <DialogDescription class="whatsapp-description">
-            Откроем чат WhatsApp с выбранным номером.
+            {{ props.description ?? 'Откроем чат WhatsApp с выбранным номером.' }}
           </DialogDescription>
         </div>
 
@@ -76,28 +89,62 @@ const isMobile = useMediaQuery('(max-width: 620px)')
     </DialogPortal>
   </DialogRoot>
 
-  <PopoverRoot v-else>
+  <PopoverRoot v-else v-model:open="isPopoverOpen">
     <PopoverTrigger as-child>
       <button
         class="whatsapp-trigger"
-        :class="{ 'whatsapp-trigger-action': props.variant === 'action' }"
+        :class="{
+          'whatsapp-trigger-action': props.variant === 'action',
+          'whatsapp-trigger-social': props.variant === 'social',
+        }"
         type="button"
       >
         {{ props.label ?? 'WhatsApp' }}
       </button>
     </PopoverTrigger>
 
+    <Teleport to="body">
+      <Transition name="whatsapp-backdrop">
+        <div
+          v-if="isPopoverOpen"
+          class="whatsapp-popover-backdrop"
+          aria-hidden="true"
+          @pointerdown="isPopoverOpen = false"
+        />
+      </Transition>
+    </Teleport>
+
     <PopoverPortal>
       <PopoverContent
         class="whatsapp-popover"
+        role="dialog"
+        :aria-labelledby="pickerTitleId"
         side="top"
-        :side-offset="10"
+        :side-offset="14"
         align="start"
-        :collision-padding="16"
+        :collision-padding="24"
+        :avoid-collisions="true"
       >
-        <p class="whatsapp-popover-title">
-          Выберите номер
-        </p>
+        <div class="whatsapp-popover-heading">
+          <div>
+            <p :id="pickerTitleId" class="whatsapp-popover-title">
+              {{ props.title ?? 'Выберите номер' }}
+            </p>
+            <p v-if="props.description" class="whatsapp-popover-description">
+              {{ props.description }}
+            </p>
+          </div>
+          <button
+            class="whatsapp-popover-close"
+            type="button"
+            aria-label="Закрыть меню"
+            @click="isPopoverOpen = false"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
         <div class="whatsapp-options">
           <a
             v-for="number in props.numbers"
@@ -107,7 +154,10 @@ const isMobile = useMediaQuery('(max-width: 620px)')
             target="_blank"
             rel="noopener noreferrer"
           >
-            <span>{{ number.label }}</span>
+            <span class="whatsapp-option-content">
+              <strong>{{ number.label }}</strong>
+              <span v-if="number.description">{{ number.description }}</span>
+            </span>
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M14 5h5v5M19 5l-8 8M19 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4" />
             </svg>
@@ -119,6 +169,18 @@ const isMobile = useMediaQuery('(max-width: 620px)')
 </template>
 
 <style scoped>
+:global(:root) {
+  --contact-picker-backdrop-layer: 1000;
+  --contact-picker-content-layer: 1010;
+  --contact-picker-surface: rgb(250 250 250 / 98%);
+  --contact-picker-option: #f4f4f5;
+}
+
+:global(.dark) {
+  --contact-picker-surface: rgb(24 24 27 / 98%);
+  --contact-picker-option: #27272a;
+}
+
 .whatsapp-trigger {
   position: relative;
   width: fit-content;
@@ -126,7 +188,7 @@ const isMobile = useMediaQuery('(max-width: 620px)')
   border: 0;
   padding: 0;
   background: transparent;
-  color: var(--contacts-muted);
+  color: var(--contacts-muted, var(--color-muted-foreground));
   font: inherit;
   line-height: 1.45;
   text-align: left;
@@ -154,7 +216,7 @@ const isMobile = useMediaQuery('(max-width: 620px)')
 .whatsapp-trigger:hover,
 .whatsapp-trigger:focus-visible,
 .whatsapp-trigger[data-state='open'] {
-  color: var(--contacts-text);
+  color: var(--contacts-text, var(--color-foreground));
   opacity: 1;
 }
 
@@ -166,7 +228,7 @@ const isMobile = useMediaQuery('(max-width: 620px)')
 
 .whatsapp-trigger:focus-visible,
 .whatsapp-trigger-action:focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--contacts-text) 12%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--contacts-text, var(--color-foreground)) 12%, transparent);
 }
 
 .whatsapp-trigger-action {
@@ -174,11 +236,11 @@ const isMobile = useMediaQuery('(max-width: 620px)')
   min-height: 3.15rem;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--contacts-border);
+  border: 1px solid var(--contacts-border, var(--color-border));
   border-radius: 999px;
   padding: 0 1.35rem;
-  background: var(--contacts-card);
-  color: var(--contacts-text);
+  background: var(--contacts-card, var(--color-muted-surface));
+  color: var(--contacts-text, var(--color-foreground));
   font-weight: 850;
   opacity: 1;
   backdrop-filter: blur(10px);
@@ -197,10 +259,40 @@ const isMobile = useMediaQuery('(max-width: 620px)')
 .whatsapp-trigger-action:hover,
 .whatsapp-trigger-action:focus-visible,
 .whatsapp-trigger-action[data-state='open'] {
-  border-color: var(--contacts-border-strong);
-  background: var(--contacts-card-hover);
-  box-shadow: 0 18px 46px var(--contacts-shadow);
+  border-color: var(--contacts-border-strong, var(--color-foreground));
+  background: var(--contacts-card-hover, var(--color-surface-elevated));
+  box-shadow: 0 18px 46px var(--contacts-shadow, rgb(0 0 0 / 18%));
   transform: translateY(-2px) scale(1.012);
+}
+
+.whatsapp-trigger-social {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-muted-surface);
+  color: var(--color-foreground);
+  font-weight: 800;
+  opacity: 1;
+  transition:
+    transform 240ms ease,
+    border-color 240ms ease,
+    background-color 240ms ease;
+}
+
+.whatsapp-trigger-social::after {
+  display: none;
+}
+
+.whatsapp-trigger-social:hover,
+.whatsapp-trigger-social:focus-visible,
+.whatsapp-trigger-social[data-state='open'] {
+  border-color: color-mix(in srgb, var(--color-foreground) 24%, transparent);
+  background: var(--color-surface-elevated);
+  transform: translateY(-2px);
 }
 
 .whatsapp-popover,
@@ -219,13 +311,39 @@ const isMobile = useMediaQuery('(max-width: 620px)')
   outline: none;
 }
 
+.whatsapp-popover-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--contact-picker-backdrop-layer);
+  background: rgb(0 0 0 / 30%);
+}
+
+:global([data-reka-popper-content-wrapper]:has(> .whatsapp-popover)) {
+  z-index: var(--contact-picker-content-layer) !important;
+  pointer-events: auto;
+}
+
 .whatsapp-popover {
-  z-index: 60;
-  width: min(18rem, calc(100vw - 2rem));
-  border-radius: 1rem;
-  padding: 0.8rem;
+  z-index: var(--contact-picker-content-layer);
+  width: min(21rem, calc(100vw - 3rem));
+  border-color: color-mix(in srgb, var(--picker-text) 14%, transparent);
+  border-radius: 1.15rem;
+  padding: 1.25rem;
+  background: var(--contact-picker-surface);
+  box-shadow:
+    0 24px 72px rgb(0 0 0 / 30%),
+    0 2px 8px rgb(0 0 0 / 12%);
+  backdrop-filter: blur(6px);
   transform-origin: var(--reka-popover-content-transform-origin);
   animation: whatsapp-popover-in 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.whatsapp-popover-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: start;
+  margin-bottom: 1rem;
 }
 
 .whatsapp-popover-title,
@@ -236,12 +354,63 @@ const isMobile = useMediaQuery('(max-width: 620px)')
 }
 
 .whatsapp-popover-title {
-  padding: 0.15rem 0.2rem 0.65rem;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.whatsapp-popover-description {
+  margin: 0.35rem 0 0;
+  color: var(--picker-muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.whatsapp-popover-close {
+  display: inline-grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--picker-border);
+  border-radius: 0.75rem;
+  background: var(--contact-picker-option);
+  color: var(--picker-muted);
+  cursor: pointer;
+  outline: none;
+  place-items: center;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+.whatsapp-popover-close svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 1.8;
+}
+
+.whatsapp-popover-close:hover,
+.whatsapp-popover-close:focus-visible {
+  border-color: color-mix(in srgb, var(--picker-text) 28%, transparent);
+  background: var(--picker-surface);
+  color: var(--picker-text);
+}
+
+.whatsapp-popover-close:focus-visible {
+  box-shadow: 0 0 0 3px var(--color-ring);
 }
 
 .whatsapp-options {
   display: grid;
   gap: 0.45rem;
+}
+
+.whatsapp-popover .whatsapp-options {
+  gap: 0.65rem;
 }
 
 .whatsapp-option {
@@ -262,6 +431,31 @@ const isMobile = useMediaQuery('(max-width: 620px)')
     border-color 220ms ease,
     background-color 220ms ease,
     opacity 220ms ease;
+}
+
+.whatsapp-popover .whatsapp-option {
+  min-height: 3.5rem;
+  padding: 0.65rem 0.9rem;
+  background: var(--contact-picker-option);
+}
+
+.whatsapp-option-content {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.whatsapp-option-content strong {
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+.whatsapp-option-content > span {
+  color: var(--picker-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 .whatsapp-option svg {
@@ -375,6 +569,16 @@ const isMobile = useMediaQuery('(max-width: 620px)')
   }
 }
 
+.whatsapp-backdrop-enter-active,
+.whatsapp-backdrop-leave-active {
+  transition: opacity 180ms ease;
+}
+
+.whatsapp-backdrop-enter-from,
+.whatsapp-backdrop-leave-to {
+  opacity: 0;
+}
+
 @keyframes whatsapp-overlay-in {
   from {
     opacity: 0;
@@ -397,6 +601,7 @@ const isMobile = useMediaQuery('(max-width: 620px)')
   }
 
   .whatsapp-popover,
+  .whatsapp-popover-backdrop,
   .whatsapp-overlay,
   .whatsapp-sheet {
     animation: none;

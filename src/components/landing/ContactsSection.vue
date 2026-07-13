@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import ContactMap from '~/components/contact/ContactMap.vue'
 import ContactWhatsAppPicker from '~/components/contact/ContactWhatsAppPicker.vue'
+import {
+  studioAddress,
+  studioEmail,
+  studioPhones,
+  telegramOptions,
+  whatsappOptions,
+} from '~/data/contact'
 
 const ctaNotes = [
   'Первая консультация бесплатно',
@@ -9,16 +16,7 @@ const ctaNotes = [
   'Поддерживаем проект после запуска',
 ]
 
-const contactLinks = [
-  { label: '+7 707 485 23 28', href: 'tel:+77074852328' },
-  { label: '+7 775 144 20 23', href: 'tel:+77751442023' },
-  { label: 'hello@recursor.kz', href: 'mailto:hello@recursor.kz' },
-]
-
-const studioAddress = [
-  'Алматы, ул. Ораза Жандосова, 98',
-  'БЦ «Навои»',
-]
+const contactLinks = [...studioPhones, studioEmail]
 
 const studioLocation = {
   address: ['БЦ «Навои»'],
@@ -26,21 +24,6 @@ const studioLocation = {
   link: 'https://go.2gis.com/LFMmu',
   label: 'Мы!',
 }
-
-const primarySocialLinks = [
-  { label: 'Telegram личка', href: '#' },
-  { label: 'Telegram-канал', href: '#' },
-]
-
-const socialLinksAfterWhatsApp = [
-  { label: 'Instagram', href: '#' },
-  { label: 'TikTok', href: '#' },
-]
-
-const whatsappNumbers = [
-  { label: '+7 707 485 23 28', href: 'https://wa.me/77074852328' },
-  { label: '+7 775 144 20 23', href: 'https://wa.me/77751442023' },
-]
 </script>
 
 <template>
@@ -67,7 +50,7 @@ const whatsappNumbers = [
             Договориться о брифе
           </a>
           <ContactWhatsAppPicker
-            :numbers="whatsappNumbers"
+            :numbers="whatsappOptions"
             label="Написать в WhatsApp"
             variant="action"
           />
@@ -127,7 +110,6 @@ const whatsappNumbers = [
                 </a>
                 <address class="contacts-address">
                   <span v-for="line in studioAddress" :key="line">{{ line }}</span>
-                  <span>{{ studioLocation.office }}</span>
                 </address>
               </div>
             </div>
@@ -135,29 +117,13 @@ const whatsappNumbers = [
             <div>
               <h3>Соцсети и мессенджеры</h3>
               <div class="contacts-socials">
-                <ContactWhatsAppPicker :numbers="whatsappNumbers" />
-
-                <a
-                  v-for="link in primarySocialLinks"
-                  :key="link.label"
-                  class="contacts-social-link"
-                  :href="link.href"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {{ link.label }}
-                </a>
-
-                <a
-                  v-for="link in socialLinksAfterWhatsApp"
-                  :key="link.label"
-                  class="contacts-social-link"
-                  :href="link.href"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {{ link.label }}
-                </a>
+                <ContactWhatsAppPicker :numbers="whatsappOptions" />
+                <ContactWhatsAppPicker
+                  :numbers="telegramOptions"
+                  label="Telegram"
+                  title="Кому написать в Telegram?"
+                  description="Выберите контакт"
+                />
               </div>
             </div>
           </div>
