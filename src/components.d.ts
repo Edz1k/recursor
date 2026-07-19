@@ -21,6 +21,7 @@ declare module 'vue' {
     HomeCtaSection: typeof import('./components/landing/HomeCtaSection.vue')['default']
     HomeHeroSection: typeof import('./components/landing/HomeHeroSection.vue')['default']
     HomeMarquee: typeof import('./components/landing/HomeMarquee.vue')['default']
+    HomePricingSection: typeof import('./components/landing/HomePricingSection.vue')['default']
     HomeProcessSection: typeof import('./components/landing/HomeProcessSection.vue')['default']
     HomeServicesSection: typeof import('./components/landing/HomeServicesSection.vue')['default']
     ProjectDiscussDialog: typeof import('./components/landing/ProjectDiscussDialog.vue')['default']

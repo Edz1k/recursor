@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import HomeHeroSection from '~/components/landing/HomeHeroSection.vue'
 import HomeMarquee from '~/components/landing/HomeMarquee.vue'
+import HomePricingSection from '~/components/landing/HomePricingSection.vue'
 import HomeProcessSection from '~/components/landing/HomeProcessSection.vue'
 import HomeServicesSection from '~/components/landing/HomeServicesSection.vue'
 import { useProjectDiscussDialog } from '~/composables/useProjectDiscussDialog'
@@ -16,6 +17,7 @@ const { isDiscussOpen, openDiscussDialog } = useProjectDiscussDialog()
   <HomeHeroSection @discuss="openDiscussDialog" />
   <HomeMarquee />
   <HomeServicesSection />
+  <HomePricingSection />
   <HomeProcessSection />
 
   <ProjectDiscussDialog v-model:open="isDiscussOpen" />
