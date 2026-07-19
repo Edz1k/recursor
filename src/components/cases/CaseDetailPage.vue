@@ -202,7 +202,7 @@ useHead(() => ({
 <style scoped>
 .case-page {
   min-height: 100vh;
-  background: var(--color-background);
+  background: linear-gradient(180deg, var(--section-canvas), var(--section-canvas-deep));
   color: var(--color-foreground);
 }
 
@@ -415,10 +415,15 @@ useHead(() => ({
 .case-section,
 .case-cta {
   padding: 4.5rem 0;
+  background:
+    radial-gradient(ellipse 62% 46% at 10% 12%, var(--section-glow), transparent 72%),
+    linear-gradient(180deg, var(--section-canvas), var(--section-canvas-deep));
 }
 
 .case-section-alt {
-  background: var(--color-muted-surface);
+  background:
+    radial-gradient(ellipse 58% 52% at 88% 18%, var(--section-glow), transparent 72%),
+    linear-gradient(145deg, var(--section-canvas-muted), var(--section-canvas-deep));
 }
 
 .detail-grid {

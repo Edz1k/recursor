@@ -137,9 +137,10 @@ const studioLocation = {
 
 <style scoped>
 .contacts-section {
-  --contacts-bg: #f5f5f5;
+  --contacts-bg: #f4f5f6;
   --contacts-bg-center: #fafafa;
-  --contacts-bg-edge: #ececec;
+  --contacts-bg-edge: #e9ecef;
+  --contacts-glow: rgb(74 102 148 / 7%);
   --contacts-text: #050505;
   --contacts-muted: #626262;
   --contacts-border: rgb(0 0 0 / 12%);
@@ -155,8 +156,9 @@ const studioLocation = {
   overflow: hidden;
   padding: clamp(5rem, 9vw, 8rem) 0;
   background:
-    radial-gradient(circle at 68% 28%, var(--contacts-bg-center) 0, transparent 36%),
-    radial-gradient(circle at 24% 74%, var(--contacts-bg-edge) 0, transparent 34%), var(--contacts-bg);
+    radial-gradient(ellipse 62% 52% at 72% 24%, var(--contacts-bg-center) 0, transparent 68%),
+    radial-gradient(ellipse 54% 48% at 18% 78%, var(--contacts-glow) 0, transparent 72%),
+    linear-gradient(150deg, var(--contacts-bg), var(--contacts-bg-edge));
   color: var(--contacts-text);
   color-scheme: light;
   transition:
@@ -167,9 +169,10 @@ const studioLocation = {
 :global(html.dark) .contacts-section,
 :global(.dark) .contacts-section,
 .contacts-section[data-theme='dark'] {
-  --contacts-bg: #050505;
-  --contacts-bg-center: #111111;
-  --contacts-bg-edge: #0a0a0a;
+  --contacts-bg: #0c0e11;
+  --contacts-bg-center: #15181d;
+  --contacts-bg-edge: #080a0d;
+  --contacts-glow: rgb(118 143 180 / 8%);
   --contacts-text: #fafafa;
   --contacts-muted: #a1a1aa;
   --contacts-border: rgb(255 255 255 / 12%);
@@ -189,7 +192,7 @@ const studioLocation = {
   z-index: -2;
   pointer-events: none;
   content: '';
-  opacity: 0.42;
+  opacity: 0.24;
   background-image:
     radial-gradient(circle at 1px 1px, var(--contacts-text) 0 0.42px, transparent 0.72px),
     linear-gradient(var(--contacts-grid) 1px, transparent 1px),
@@ -198,7 +201,7 @@ const studioLocation = {
     18px 18px,
     88px 88px,
     88px 88px;
-  mask-image: radial-gradient(circle at 54% 48%, #000 0, #000 48%, transparent 78%);
+  mask-image: radial-gradient(ellipse 62% 58% at 54% 46%, #000 4%, transparent 76%);
 }
 
 .contacts-container {

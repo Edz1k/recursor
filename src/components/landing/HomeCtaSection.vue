@@ -78,7 +78,9 @@ const emit = defineEmits<{
 <style scoped>
 .cta-section {
   padding: 7rem 0;
-  background: var(--color-background);
+  background:
+    radial-gradient(ellipse 64% 58% at 50% 0%, var(--section-glow), transparent 72%),
+    linear-gradient(180deg, var(--section-canvas), var(--section-canvas-deep));
 }
 
 .container {

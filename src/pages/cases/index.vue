@@ -184,7 +184,7 @@ useHead({
 <style scoped>
 .cases-page {
   min-height: 100vh;
-  background: var(--color-background);
+  background: linear-gradient(180deg, var(--section-canvas), var(--section-canvas-deep));
   color: var(--color-foreground);
 }
 
@@ -315,6 +315,12 @@ useHead({
 .cases-section,
 .process-section {
   padding: 4.5rem 0;
+}
+
+.cases-section {
+  background:
+    radial-gradient(ellipse 66% 44% at 12% 8%, var(--section-glow), transparent 72%),
+    linear-gradient(180deg, var(--section-canvas), var(--section-canvas-deep));
 }
 
 .section-heading {
@@ -645,7 +651,9 @@ useHead({
 }
 
 .process-section {
-  background: var(--color-muted-surface);
+  background:
+    radial-gradient(ellipse 58% 52% at 86% 20%, var(--section-glow), transparent 72%),
+    linear-gradient(145deg, var(--section-canvas-muted), var(--section-canvas-deep));
 }
 
 .process-inner {

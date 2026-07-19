@@ -58,11 +58,15 @@ import { SPRING_MEDIUM } from '~/data/motion'
 <style scoped>
 .section {
   padding: 7rem 0;
-  background: var(--color-background);
+  background:
+    radial-gradient(ellipse 68% 52% at 88% 18%, var(--section-glow), transparent 70%),
+    linear-gradient(180deg, var(--section-canvas), var(--section-canvas-deep));
 }
 
 .section-alt {
-  background: var(--color-muted-surface);
+  background:
+    radial-gradient(ellipse 68% 52% at 88% 18%, var(--section-glow), transparent 70%),
+    linear-gradient(145deg, var(--section-canvas-muted), var(--section-canvas-deep));
 }
 
 .container {
