@@ -8,6 +8,8 @@ export interface ProjectLeadForm {
 }
 
 export interface ProjectLeadPayload extends ProjectLeadForm {
-  source: 'navbar-discuss-project'
+  source: 'navbar-discuss-project' | 'pricing-card'
+  projectType?: string
+  estimatedPrice?: string
   submittedAt: string
 }
