@@ -106,7 +106,7 @@ async function handleSubmit() {
           </p>
 
           <p v-if="isSubmitted && lastPayload" class="border border-border rounded-lg bg-muted-surface px-3 py-2 text-sm text-muted-foreground">
-            Заявка подготовлена: {{ lastPayload.name }}, {{ lastPayload.phone }}{{ lastPayload.projectType ? `, ${lastPayload.projectType}` : '' }}
+            Заявка отправлена: {{ lastPayload.name }}, {{ lastPayload.phone }}{{ lastPayload.projectType ? `, ${lastPayload.projectType}` : '' }}. Мы скоро свяжемся с вами.
           </p>
 
           <div class="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-end">
@@ -121,7 +121,7 @@ async function handleSubmit() {
               class="h-11 rounded-lg bg-main px-5 text-sm text-main-foreground font-700 shadow-black/10 shadow-lg outline-none transition duration-200 disabled:cursor-not-allowed hover:bg-secondary hover:text-secondary-foreground disabled:opacity-45 focus-visible:ring-2 focus-visible:ring-ring"
               :disabled="!canSubmit || isSubmitting"
             >
-              {{ isSubmitting ? 'Готовим...' : 'Отправить' }}
+              {{ isSubmitting ? 'Отправляем...' : 'Отправить' }}
             </button>
           </div>
         </form>

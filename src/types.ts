@@ -7,9 +7,13 @@ export interface ProjectLeadForm {
   phone: string
 }
 
+export type ProjectLeadSource = 'navbar-discuss-project' | 'pricing-card' | 'contact-form'
+
 export interface ProjectLeadPayload extends ProjectLeadForm {
-  source: 'navbar-discuss-project' | 'pricing-card'
+  source: ProjectLeadSource
   projectType?: string
   estimatedPrice?: string
+  message?: string
+  budget?: string
   submittedAt: string
 }

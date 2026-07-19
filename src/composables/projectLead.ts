@@ -4,6 +4,17 @@ type ProjectLeadContext = Pick<ProjectLeadPayload, 'source' | 'projectType' | 'e
 
 const defaultContext = () => ({ source: 'navbar-discuss-project' } as const)
 
+export async function sendProjectLead(payload: ProjectLeadPayload): Promise<void> {
+  const response = await fetch('/api/lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+
+  if (!response.ok)
+    throw new Error(`Lead delivery failed with status ${response.status}`)
+}
+
 export function useProjectLead(getContext: () => ProjectLeadContext = defaultContext) {
   const form = reactive<ProjectLeadForm>({
     name: '',
@@ -46,11 +57,16 @@ export function useProjectLead(getContext: () => ProjectLeadContext = defaultCon
         submittedAt: new Date().toISOString(),
       }
 
-      // Future Telegram bot integration should send this payload to the backend endpoint.
+      await sendProjectLead(payload)
+
       lastPayload.value = payload
       isSubmitted.value = true
 
       return payload
+    }
+    catch {
+      errorMessage.value = 'Не удалось отправить заявку. Попробуйте ещё раз или напишите нам в WhatsApp.'
+      return null
     }
     finally {
       isSubmitting.value = false

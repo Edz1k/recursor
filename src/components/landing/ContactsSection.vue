@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { ProjectLeadPayload } from '~/types'
 import ContactMap from '~/components/contact/ContactMap.vue'
 import ContactWhatsAppPicker from '~/components/contact/ContactWhatsAppPicker.vue'
+import { sendProjectLead } from '~/composables/projectLead'
 import {
   studioAddress,
   studioEmail,
@@ -8,6 +10,54 @@ import {
   telegramOptions,
   whatsappOptions,
 } from '~/data/contact'
+
+const leadForm = reactive({
+  name: '',
+  contact: '',
+  project: '',
+  budget: '',
+})
+
+const isSubmitting = shallowRef(false)
+const isSubmitted = shallowRef(false)
+const errorMessage = shallowRef('')
+
+async function submitContactLead() {
+  errorMessage.value = ''
+  isSubmitted.value = false
+
+  if (leadForm.name.trim().length < 2 || leadForm.contact.trim().length < 5) {
+    errorMessage.value = 'Заполните имя и контакт для связи.'
+    return
+  }
+
+  isSubmitting.value = true
+
+  try {
+    const payload: ProjectLeadPayload = {
+      source: 'contact-form',
+      name: leadForm.name.trim(),
+      phone: leadForm.contact.trim(),
+      message: leadForm.project.trim() || undefined,
+      budget: leadForm.budget.trim() || undefined,
+      submittedAt: new Date().toISOString(),
+    }
+
+    await sendProjectLead(payload)
+
+    isSubmitted.value = true
+    leadForm.name = ''
+    leadForm.contact = ''
+    leadForm.project = ''
+    leadForm.budget = ''
+  }
+  catch {
+    errorMessage.value = 'Не удалось отправить заявку. Попробуйте ещё раз или напишите нам в WhatsApp.'
+  }
+  finally {
+    isSubmitting.value = false
+  }
+}
 
 const ctaNotes = [
   'Первая консультация бесплатно',
@@ -64,7 +114,7 @@ const studioLocation = {
       </div>
 
       <aside class="contacts-card" aria-label="Форма заявки и контакты">
-        <form id="contact-form" class="contacts-form" @submit.prevent>
+        <form id="contact-form" class="contacts-form" @submit.prevent="submitContactLead">
           <div class="contacts-form-header">
             <h3>Заявка на проект</h3>
             <p>Оставьте контакты и пару слов о задаче.</p>
@@ -72,26 +122,34 @@ const studioLocation = {
 
           <label class="contacts-field">
             <span>Имя</span>
-            <input name="name" type="text" autocomplete="name">
+            <input v-model="leadForm.name" name="name" type="text" autocomplete="name">
           </label>
 
           <label class="contacts-field">
             <span>Телефон или Telegram</span>
-            <input name="contact" type="text" autocomplete="tel">
+            <input v-model="leadForm.contact" name="contact" type="text" autocomplete="tel">
           </label>
 
           <label class="contacts-field">
             <span>Что нужно разработать?</span>
-            <textarea name="project" rows="4" />
+            <textarea v-model="leadForm.project" name="project" rows="4" />
           </label>
 
           <label class="contacts-field">
             <span>Бюджет / сроки, если есть</span>
-            <input name="budget" type="text">
+            <input v-model="leadForm.budget" name="budget" type="text">
           </label>
 
-          <button class="contacts-submit" type="submit">
-            Отправить заявку
+          <p v-if="errorMessage" class="contacts-form-status is-error" role="alert">
+            {{ errorMessage }}
+          </p>
+
+          <p v-if="isSubmitted" class="contacts-form-status" role="status">
+            Заявка отправлена! Мы свяжемся с вами в течение рабочего дня.
+          </p>
+
+          <button class="contacts-submit" type="submit" :disabled="isSubmitting">
+            {{ isSubmitting ? 'Отправляем...' : 'Отправить заявку' }}
           </button>
         </form>
 
@@ -419,6 +477,27 @@ const studioLocation = {
 .contacts-submit {
   width: 100%;
   margin-top: 0.25rem;
+}
+
+.contacts-submit:disabled {
+  cursor: wait;
+  opacity: 0.6;
+  transform: none;
+}
+
+.contacts-form-status {
+  margin: 0;
+  padding: 0.7rem 0.95rem;
+  border: 1px solid var(--contacts-border);
+  border-radius: 0.9rem;
+  background: var(--contacts-input);
+  color: var(--contacts-text);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.contacts-form-status.is-error {
+  color: var(--contacts-muted);
 }
 
 .contacts-lower {
