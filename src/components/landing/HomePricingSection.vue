@@ -28,6 +28,15 @@ const pricingItems = [
 ] as const
 
 const priceFactors = ['Объём страниц', 'Сложность дизайна', 'Функционал и интеграции', 'Готовность материалов'] as const
+type PricingItem = (typeof pricingItems)[number]
+
+const selectedItem = shallowRef<PricingItem>()
+const { isDiscussOpen, openDiscussDialog } = useProjectDiscussDialog()
+
+function selectPricingItem(item: PricingItem) {
+  selectedItem.value = item
+  openDiscussDialog()
+}
 
 useScrollReveal({ selector: '[data-pricing-reveal]', threshold: 0.12 })
 </script>
@@ -56,6 +65,13 @@ useScrollReveal({ selector: '[data-pricing-reveal]', threshold: 0.12 })
           class="pricing-card"
           data-pricing-reveal
         >
+          <button
+            class="pricing-card-action"
+            type="button"
+            :aria-label="`Оставить заявку: ${item.title}, ${item.price}`"
+            @click="selectPricingItem(item)"
+          />
+
           <div class="pricing-card-head">
             <span class="pricing-index">{{ item.index }}</span>
             <span v-if="'badge' in item" class="pricing-badge">{{ item.badge }}</span>
@@ -80,6 +96,11 @@ useScrollReveal({ selector: '[data-pricing-reveal]', threshold: 0.12 })
           <p class="pricing-note">
             {{ item.note }}
           </p>
+
+          <span class="pricing-select">
+            Оставить заявку
+            <span class="i-carbon-arrow-up-right" aria-hidden="true" />
+          </span>
         </li>
       </ul>
 
@@ -105,6 +126,13 @@ useScrollReveal({ selector: '[data-pricing-reveal]', threshold: 0.12 })
         </ul>
       </aside>
     </div>
+
+    <ProjectDiscussDialog
+      v-model:open="isDiscussOpen"
+      source="pricing-card"
+      :project-type="selectedItem?.title"
+      :estimated-price="selectedItem?.price"
+    />
   </section>
 </template>
 
@@ -216,10 +244,26 @@ useScrollReveal({ selector: '[data-pricing-reveal]', threshold: 0.12 })
     color-mix(in srgb, var(--color-background) 88%, transparent);
   box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-foreground) 7%, transparent);
   flex-direction: column;
+  cursor: pointer;
   transition:
     border-color 260ms ease,
     box-shadow 260ms ease,
     transform 260ms ease;
+}
+
+.pricing-card-action {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.pricing-card-action:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--color-ring);
 }
 
 .pricing-card:last-child {
@@ -328,6 +372,27 @@ useScrollReveal({ selector: '[data-pricing-reveal]', threshold: 0.12 })
   color: var(--color-muted);
   font-size: 0.78rem;
   line-height: 1.55;
+}
+
+.pricing-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  margin-top: 1rem;
+  color: var(--color-foreground);
+  font-size: 0.82rem;
+  font-weight: 800;
+  opacity: 0.7;
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+.pricing-card:hover .pricing-select,
+.pricing-card:focus-within .pricing-select {
+  opacity: 1;
+  transform: translateX(2px);
 }
 
 .pricing-info {
@@ -454,7 +519,8 @@ useScrollReveal({ selector: '[data-pricing-reveal]', threshold: 0.12 })
 @media (prefers-reduced-motion: reduce) {
   [data-pricing-reveal],
   [data-pricing-reveal].is-revealed,
-  .pricing-card {
+  .pricing-card,
+  .pricing-select {
     transition: none;
     transform: none;
   }

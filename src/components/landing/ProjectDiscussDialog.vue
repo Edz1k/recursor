@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ProjectLeadPayload } from '~/types'
 import {
   DialogClose,
   DialogContent,
@@ -9,6 +10,16 @@ import {
   DialogTitle,
 } from 'reka-ui'
 import { useProjectLead } from '~/composables/projectLead'
+
+interface Props {
+  source?: ProjectLeadPayload['source']
+  projectType?: string
+  estimatedPrice?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  source: 'navbar-discuss-project',
+})
 
 const open = defineModel<boolean>('open', { default: false })
 
@@ -21,7 +32,11 @@ const {
   lastPayload,
   resetForm,
   submitLead,
-} = useProjectLead()
+} = useProjectLead(() => ({
+  source: props.source,
+  projectType: props.projectType,
+  estimatedPrice: props.estimatedPrice,
+}))
 
 watch(open, (value) => {
   if (value)
@@ -51,8 +66,14 @@ async function handleSubmit() {
             Обсудить проект
           </DialogTitle>
           <DialogDescription class="text-sm text-muted-foreground leading-6">
-            Оставьте имя и номер телефона. Заявка уже готовится в формате, который потом подключим к Telegram-боту.
+            Оставьте имя и номер телефона, чтобы команда могла связаться с вами и уточнить детали проекта.
           </DialogDescription>
+        </div>
+
+        <div v-if="props.projectType" class="mt-5 border border-border rounded-lg bg-muted-surface px-4 py-3">
+          <span class="block text-xs text-muted font-800 tracking-wide uppercase">Выбранный формат</span>
+          <strong class="mt-1 block text-sm text-foreground font-800">{{ props.projectType }}</strong>
+          <span v-if="props.estimatedPrice" class="mt-1 block text-sm text-muted-foreground">{{ props.estimatedPrice }}</span>
         </div>
 
         <form class="mt-6 space-y-4" @submit.prevent="handleSubmit">
@@ -85,7 +106,7 @@ async function handleSubmit() {
           </p>
 
           <p v-if="isSubmitted && lastPayload" class="border border-border rounded-lg bg-muted-surface px-3 py-2 text-sm text-muted-foreground">
-            Заявка подготовлена: {{ lastPayload.name }}, {{ lastPayload.phone }}
+            Заявка подготовлена: {{ lastPayload.name }}, {{ lastPayload.phone }}{{ lastPayload.projectType ? `, ${lastPayload.projectType}` : '' }}
           </p>
 
           <div class="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-end">

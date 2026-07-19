@@ -1,6 +1,10 @@
 import type { ProjectLeadForm, ProjectLeadPayload } from '~/types'
 
-export function useProjectLead() {
+type ProjectLeadContext = Pick<ProjectLeadPayload, 'source' | 'projectType' | 'estimatedPrice'>
+
+const defaultContext = () => ({ source: 'navbar-discuss-project' } as const)
+
+export function useProjectLead(getContext: () => ProjectLeadContext = defaultContext) {
   const form = reactive<ProjectLeadForm>({
     name: '',
     phone: '',
@@ -36,9 +40,9 @@ export function useProjectLead() {
 
     try {
       const payload: ProjectLeadPayload = {
+        ...getContext(),
         name: form.name.trim(),
         phone: form.phone,
-        source: 'navbar-discuss-project',
         submittedAt: new Date().toISOString(),
       }
 
