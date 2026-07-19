@@ -138,7 +138,9 @@ useScrollReveal()
 }
 
 .about-studio {
-  --about-bg: #f6f7fb;
+  --about-bg: #f5f6f8;
+  --about-bg-deep: #eceff3;
+  --about-glow: rgb(79 125 223 / 8%);
   --about-text: #10141b;
   --about-muted: #5d6675;
   --about-card: rgb(255 255 255 / 82%);
@@ -156,14 +158,18 @@ useScrollReveal()
   isolation: isolate;
   overflow: hidden;
   padding: clamp(4.5rem, 8vw, 7rem) 0;
-  background: var(--about-bg);
+  background:
+    radial-gradient(ellipse 64% 50% at 82% 14%, var(--about-glow), transparent 72%),
+    linear-gradient(155deg, var(--about-bg), var(--about-bg-deep));
   color: var(--about-text);
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   .about-studio {
-    --about-bg: #09090b;
+    --about-bg: #0d1014;
+    --about-bg-deep: #090b0e;
+    --about-glow: rgb(143 183 255 / 7%);
     --about-text: #f7fafc;
     --about-muted: #a7b0bf;
     --about-card: rgb(255 255 255 / 7%);
@@ -183,7 +189,9 @@ useScrollReveal()
 
 :global(html:not(.dark)) .about-studio,
 .about-studio[data-theme='light'] {
-  --about-bg: #f6f7fb;
+  --about-bg: #f5f6f8;
+  --about-bg-deep: #eceff3;
+  --about-glow: rgb(79 125 223 / 8%);
   --about-text: #10141b;
   --about-muted: #5d6675;
   --about-card: rgb(255 255 255 / 82%);
@@ -206,7 +214,9 @@ useScrollReveal()
 
 :global(html.dark) .about-studio,
 .about-studio[data-theme='dark'] {
-  --about-bg: #09090b;
+  --about-bg: #0d1014;
+  --about-bg-deep: #090b0e;
+  --about-glow: rgb(143 183 255 / 7%);
   --about-text: #f7fafc;
   --about-muted: #a7b0bf;
   --about-card: rgb(255 255 255 / 7%);
@@ -244,12 +254,12 @@ useScrollReveal()
   z-index: -2;
   inset: -20% -10% 0;
   pointer-events: none;
-  opacity: 0.08;
+  opacity: 0.055;
   background-image:
     linear-gradient(var(--about-border-strong) 1px, transparent 1px),
     linear-gradient(90deg, var(--about-border-strong) 1px, transparent 1px);
   background-size: 72px 72px;
-  mask-image: linear-gradient(90deg, transparent, #000 24%, #000 78%, transparent);
+  mask-image: radial-gradient(ellipse 58% 72% at 58% 34%, #000 8%, transparent 76%);
   transform: perspective(900px) rotateX(58deg) scale(1.15);
   transform-origin: 50% 0;
 }

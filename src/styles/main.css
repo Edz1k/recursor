@@ -17,6 +17,10 @@
   --color-surface-elevated: #fafafa;
   --color-border: #e4e4e7;
   --color-ring: #18181b;
+  --section-canvas: #f7f7f8;
+  --section-canvas-deep: #eef0f2;
+  --section-canvas-muted: #f1f2f4;
+  --section-glow: rgb(78 101 144 / 7%);
 }
 
 .dark {
@@ -35,6 +39,10 @@
   --color-surface-elevated: #27272a;
   --color-border: rgb(255 255 255 / 12%);
   --color-ring: #fafafa;
+  --section-canvas: #0d0f12;
+  --section-canvas-deep: #090b0e;
+  --section-canvas-muted: #12151a;
+  --section-glow: rgb(116 139 174 / 8%);
 }
 
 html,

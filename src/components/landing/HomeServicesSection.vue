@@ -80,7 +80,9 @@ import { SPRING_MEDIUM } from '~/data/motion'
 <style scoped>
 .section {
   padding: 7rem 0;
-  background: var(--color-background);
+  background:
+    radial-gradient(ellipse 72% 48% at 8% 12%, var(--section-glow), transparent 68%),
+    linear-gradient(180deg, var(--section-canvas), var(--section-canvas-deep));
 }
 
 .container {

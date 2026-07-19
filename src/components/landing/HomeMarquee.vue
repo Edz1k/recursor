@@ -26,7 +26,12 @@ import { LANDING_MARQUEE } from '~/data/landing'
   padding: 0.875rem 0;
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
-  background: var(--color-muted-surface);
+  background: linear-gradient(
+    90deg,
+    var(--section-canvas-deep),
+    var(--section-canvas-muted) 50%,
+    var(--section-canvas-deep)
+  );
   mask-image: linear-gradient(to right, transparent, #111 8%, #111 92%, transparent);
 }
 
