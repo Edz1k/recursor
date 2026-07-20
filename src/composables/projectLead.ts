@@ -1,4 +1,5 @@
 import type { ProjectLeadForm, ProjectLeadPayload } from '~/types'
+import { ADS_CONVERSIONS, fireAdsConversion } from '~/utils/adsConversion'
 
 type ProjectLeadContext = Pick<ProjectLeadPayload, 'source' | 'projectType' | 'estimatedPrice'>
 
@@ -13,22 +14,6 @@ export async function sendProjectLead(payload: ProjectLeadPayload): Promise<void
 
   if (!response.ok)
     throw new Error(`Lead delivery failed with status ${response.status}`)
-}
-
-type Gtag = (command: string, action: string, params?: Record<string, unknown>) => void
-
-// Fires the Google Ads "lead form submission" conversion after a successful send.
-// Runs client-side only; safely no-ops if the Google tag hasn't loaded.
-function trackLeadConversion(): void {
-  if (typeof window === 'undefined')
-    return
-
-  const gtag = (window as unknown as { gtag?: Gtag }).gtag
-  gtag?.('event', 'conversion', {
-    send_to: 'AW-18338223921/9rLFCNGb5dMcELGurKhE',
-    value: 1.0,
-    currency: 'USD',
-  })
 }
 
 export function useProjectLead(getContext: () => ProjectLeadContext = defaultContext) {
@@ -78,7 +63,7 @@ export function useProjectLead(getContext: () => ProjectLeadContext = defaultCon
       lastPayload.value = payload
       isSubmitted.value = true
 
-      trackLeadConversion()
+      fireAdsConversion(ADS_CONVERSIONS.leadForm)
 
       return payload
     }

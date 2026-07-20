@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ContactCallButton from '~/components/contact/ContactCallButton.vue'
 import { useProjectDiscussDialog } from '~/composables/useProjectDiscussDialog'
 
 const isMenuOpen = shallowRef(false)
@@ -72,6 +73,7 @@ function openDiscussDialog() {
             <span v-if="isDark" class="i-carbon-moon text-lg" aria-hidden="true" />
             <span v-else class="i-carbon-sun text-lg" aria-hidden="true" />
           </button>
+          <ContactCallButton variant="header" />
           <button
             type="button"
             class="h-10 inline-flex items-center justify-center rounded-lg bg-main px-4 text-sm text-main-foreground font-800 shadow-black/10 shadow-lg outline-none transition duration-300 hover:bg-secondary hover:text-secondary-foreground focus-visible:ring-2 focus-visible:ring-ring"
@@ -134,6 +136,7 @@ function openDiscussDialog() {
             <span class="i-carbon-help" aria-hidden="true" />
           </RouterLink>
 
+          <ContactCallButton variant="menu" />
           <button
             type="button"
             class="h-12 w-full rounded-lg bg-main px-4 text-sm text-main-foreground font-800 transition duration-300 hover:bg-secondary hover:text-secondary-foreground"
